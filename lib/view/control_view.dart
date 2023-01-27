@@ -1,3 +1,4 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/constants.dart';
@@ -29,23 +30,72 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<ControlViewModel>(
-      builder: (controller) => BottomNavigationBar(
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-        iconSize: 32.0,
-        selectedIconTheme: const IconThemeData(color: salmon500, size: 36.0),
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        currentIndex: controller.navigatorIndex,
-        onTap: (index) {
-          controller.changeCurrentScreen(index);
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.circle), label: 'feed'),
-          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'album'),
-          BottomNavigationBarItem(icon: Icon(Icons.ac_unit), label: 'settings')
-        ],
+      builder: (controller) => Theme(
+        data: ThemeData(
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+        ),
+        child: BottomNavigationBar(
+          elevation: 0.0,
+          backgroundColor: Colors.white,
+          iconSize: 32.0,
+          selectedIconTheme: const IconThemeData(color: salmon500),
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          type: BottomNavigationBarType.fixed,
+          currentIndex: controller.navigatorIndex,
+          onTap: (index) {
+            controller.changeCurrentScreen(index);
+          },
+          items: [
+            BottomNavigationBarItem(
+                icon: Icon(EvaIcons.compassOutline),
+                label: 'feed',
+                activeIcon: Container(
+                  width: 54,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: salmon100,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Icon(
+                    EvaIcons.compassOutline,
+                    color: salmon500,
+                  ),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(EvaIcons.gridOutline),
+                label: 'album',
+                activeIcon: Center(
+                  child: Container(
+                    width: 54,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: salmon100,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Icon(
+                      EvaIcons.gridOutline,
+                      color: salmon500,
+                    ),
+                  ),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(EvaIcons.settingsOutline),
+                label: 'settings',
+                activeIcon: Center(
+                  child: Container(
+                    width: 54,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        color: salmon100,
+                        borderRadius: BorderRadius.circular(10.0)),
+                    child: Icon(
+                      EvaIcons.settingsOutline,
+                      color: salmon500,
+                    ),
+                  ),
+                ))
+          ],
+        ),
       ),
     );
   }
