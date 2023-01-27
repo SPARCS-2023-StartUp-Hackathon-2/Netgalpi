@@ -16,13 +16,13 @@ class PostModel {
     required this.imageUrl,
     required this.gifUrl,
     required this.uploadedAt,
-    required this.likesCount,
     required this.isOpened,
     required this.userIdList,
     required this.stickerIdList,
     required this.mentionIdList,
     required this.tagIdList,
     required this.diaryIdList,
+    this.likesCount = 0,
   });
 
   PostModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {

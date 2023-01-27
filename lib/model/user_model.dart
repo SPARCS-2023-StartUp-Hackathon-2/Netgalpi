@@ -2,15 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   late List<String> postIdList;
-  late String userId, username, realname, token, joinDate;
+  late String userId, username, realname, token;
+  late DateTime joinDate;
 
   UserModel({
     required this.userId,
     required this.username,
-    required this.token,
     required this.realname,
-    required this.joinDate,
+    required this.token,
     required this.postIdList,
+    required this.joinDate,
   });
 
   UserModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
