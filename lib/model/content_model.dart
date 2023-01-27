@@ -9,9 +9,9 @@ class ContentModel {
     required this.contentPostId,
     required this.contentImgUrl,
     required this.contentText,
-    required this.uploadedAt,
     required this.writerId,
-  });
+    uploadedAt,
+  }) : uploadedAt = uploadedAt ?? DateTime.now();
 
   ContentModel.fromDocumentSnapshot(
       {required DocumentSnapshot documentSnapshot}) {
