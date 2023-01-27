@@ -1,4 +1,4 @@
-# netgalpi
+# Netgalpi
 
 A new Flutter project.
 
