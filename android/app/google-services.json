@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1024292233306",
+    "project_id": "sparcs-hackathon",
+    "storage_bucket": "sparcs-hackathon.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024292233306:android:35ac97e40c37ebc71a7863",
+        "android_client_info": {
+          "package_name": "com.example.netgalpi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1024292233306-auqek5p401n8fo47tev1lttat6gtuj64.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAv_5aP073c-c9UiSlgs8Uh4md0RQpBiCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1024292233306-auqek5p401n8fo47tev1lttat6gtuj64.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
