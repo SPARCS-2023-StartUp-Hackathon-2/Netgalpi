@@ -12,14 +12,14 @@ class PostModel {
     required this.imageUrl,
     required this.gifUrl,
     required this.title,
-    required this.uploadedAt,
     required this.isOpened,
     required this.writerId,
     required this.mentionIdList,
     required this.likerIdList,
     required this.contentIdList,
     this.likesCount = 0,
-  });
+    uploadedAt,
+  }) : uploadedAt = uploadedAt ?? DateTime.now();
 
   PostModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
     postId = documentSnapshot.id;
