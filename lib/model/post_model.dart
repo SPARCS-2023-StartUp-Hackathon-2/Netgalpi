@@ -1,56 +1,52 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
-  late String postId, imageUrl, gifUrl;
+  late String postId, imageUrl, gifUrl, title, writerId;
   late DateTime uploadedAt;
   late int likesCount;
   late bool isOpened;
-  late List<String> userIdList,
-      stickerIdList,
-      mentionIdList,
-      tagIdList,
-      diaryIdList;
+  late List<String> mentionIdList, likerIdList, contentIdList;
 
   PostModel({
     required this.postId,
     required this.imageUrl,
     required this.gifUrl,
-    required this.uploadedAt,
+    required this.title,
     required this.isOpened,
-    required this.userIdList,
-    required this.stickerIdList,
+    required this.writerId,
     required this.mentionIdList,
-    required this.tagIdList,
-    required this.diaryIdList,
+    required this.likerIdList,
+    required this.contentIdList,
     this.likesCount = 0,
-  });
+    uploadedAt,
+  }) : uploadedAt = uploadedAt ?? DateTime.now();
 
   PostModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
     postId = documentSnapshot.id;
     imageUrl = documentSnapshot['imageUrl'];
     gifUrl = documentSnapshot['gifUrl'];
+    title = documentSnapshot['title'];
     uploadedAt = documentSnapshot['uploadedAt'];
-    likesCount = documentSnapshot['likesCount'];
     isOpened = documentSnapshot['isOpened'];
-    userIdList = documentSnapshot['userIdList'];
-    stickerIdList = documentSnapshot['stickerIdList'];
+    likesCount = documentSnapshot['likesCount'];
+    writerId = documentSnapshot['writerId'];
     mentionIdList = documentSnapshot['mentionIdList'];
-    tagIdList = documentSnapshot['tagIdList'];
-    diaryIdList = documentSnapshot['diaryIdList'];
+    likerIdList = documentSnapshot['likerIdList'];
+    contentIdList = documentSnapshot['contentIdList'];
   }
 
   PostModel.fromJson(Map<dynamic, dynamic> map) {
     postId = map['postId'];
     imageUrl = map['imageUrl'];
     gifUrl = map['gifUrl'];
+    title = map['title'];
     uploadedAt = map['uploadedAt'];
-    likesCount = map['likesCount'];
     isOpened = map['isOpened'];
-    userIdList = map['userIdList'];
-    stickerIdList = map['stickerIdList'];
+    likesCount = map['likesCount'];
+    writerId = map['writerId'];
     mentionIdList = map['mentionIdList'];
-    tagIdList = map['tagIdList'];
-    diaryIdList = map['diaryIdList'];
+    likerIdList = map['likerIdList'];
+    contentIdList = map['contentIdList'];
   }
 
   Map<String, dynamic> toJson() {
@@ -58,14 +54,14 @@ class PostModel {
       'postId': postId,
       'imageUrl': imageUrl,
       'gifUrl': gifUrl,
+      'title': title,
       'uploadedAt': uploadedAt,
-      'likesCount': likesCount,
       'isOpened': isOpened,
-      'userIdList': userIdList,
-      'stickerIdList': stickerIdList,
+      'likesCount': likesCount,
+      'writerId': writerId,
       'mentionIdList': mentionIdList,
-      'tagIdList': tagIdList,
-      'diaryIdList': diaryIdList,
+      'likerIdList': likerIdList,
+      'contentIdList': contentIdList,
     };
   }
 }
