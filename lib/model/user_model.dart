@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   late List<String> postIdList;
-  late String userId, username, nickname, token;
+  late String username, nickname, token;
+  String? userId;
 
   UserModel({
-    required this.userId,
+    this.userId,
     required this.username,
     required this.nickname,
     required this.token,

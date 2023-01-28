@@ -6,7 +6,15 @@ class FirestoreUser {
   final CollectionReference _userCollection =
       FirebaseFirestore.instance.collection('user');
   addUserToFirestore(UserModel userModel) async {
-    await _userCollection.doc(userModel.userId).set(userModel.toJson());
+    await _userCollection.doc().set(userModel.toJson());
+  }
+
+  Future<List<QueryDocumentSnapshot?>> getUserByUsername(
+      String username) async {
+    return await _userCollection
+        .where("username", isEqualTo: username)
+        .get()
+        .then((res) => res.docs);
   }
 
   Future<DocumentSnapshot> getUserFromFirestore(String uid) async {
