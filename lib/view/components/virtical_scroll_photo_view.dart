@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
+import 'package:netgalpi/view/components/photo_view.dart';
 import 'package:netgalpi/view/detailed_view.dart';
-
-import 'default_photo_card.dart';
 
 class VirticalScrollPhotoView extends StatelessWidget {
   const VirticalScrollPhotoView({
@@ -29,21 +28,23 @@ class VirticalScrollPhotoView extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         childAspectRatio: (itemWidth / itemHeight),
-        children: List.generate(postIdList.length, (index) {
+        children: List.generate(postIdList.length, (idx) {
           return Card(
             color: Colors.white,
             margin: const EdgeInsets.all(4.0),
             child: GestureDetector(
               onTap: () {
                 if (!viewOnly) {
-                  Get.to(() => const DetailedView()); //postIdx: index));
+                  Get.to(() => DetailedView(
+                        index: idx,
+                      ));
                 }
               },
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  child: DefaultPhotoCard(
-                    imgProvider: Get.find<PostListViewModel>()
-                        .postImgMap[postIdList[index]]!,
+                  child: PhotoView(
+                    imageProvider: Get.find<PostListViewModel>()
+                        .postImgMap[postIdList[idx]]!,
                   )),
             ),
           );

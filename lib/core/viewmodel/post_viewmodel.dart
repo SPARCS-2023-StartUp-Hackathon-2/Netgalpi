@@ -10,7 +10,7 @@ class PostListViewModel extends GetxController {
   List<PostModel> postList = [];
   Map<String, CachedNetworkImageProvider> postImgMap = {};
   List<String> currentPostIdList = [];
-  Map<String, List<String>> friendsPostIdList = {};
+  Map<String, List<String>> groupedPostIdListMap = {};
 
   String? selectedNickName;
 
@@ -27,7 +27,7 @@ class PostListViewModel extends GetxController {
     super.onInit();
     getCurrentUser().whenComplete(() {
       getPost();
-      setGroupedPostIdMap();
+      setGroupedPostIdListMap();
     });
     _loading = false;
   }
@@ -69,9 +69,10 @@ class PostListViewModel extends GetxController {
     update();
   }
 
-  void setGroupedPostIdMap() async {
-    friendsPostIdList =
-        await FirestoreApis().groupPostByUser(_currentUser!.userId);
+  void setGroupedPostIdListMap() async {
+    // _currentUser!.userId
+    groupedPostIdListMap = await FirestoreApis().groupPostByUser('test');
+    print(groupedPostIdListMap);
     update();
   }
 }
