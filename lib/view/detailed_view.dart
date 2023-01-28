@@ -1,28 +1,41 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:netgalpi/helper/image_bg.dart';
-import 'package:netgalpi/helper/image_pixels.dart';
-import 'package:netgalpi/view/components/horizontal_scroll_photo_view.dart';
-import 'package:netgalpi/view/components/photo_detail.dart';
+import 'package:get/get.dart';
+import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
+import 'package:netgalpi/view/components/detailed_card.dart';
+import 'package:netgalpi/view/components/photo_view.dart';
 
 class DetailedView extends StatefulWidget {
-  const DetailedView({super.key});
+  const DetailedView({super.key, required this.index});
+  final int index;
 
   @override
   State<DetailedView> createState() => _DetailedViewState();
 }
 
 class _DetailedViewState extends State<DetailedView> {
-  
+  late PageController controller;
+  Iterable<CachedNetworkImageProvider> imageProviderList = [];
+  int _currentPage = 0;
+  var postController = Get.find<PostListViewModel>();
+
   @override
   void initState() {
     super.initState();
+    controller =
+        PageController(viewportFraction: 0.86, initialPage: widget.index);
+    _currentPage = widget.index;
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    var tempList = [];
+    for (var element in postController.currentPostIdList) {
+      tempList.add(postController.postImgMap[element]);
+    }
+    imageProviderList = tempList.map((e) => e);
   }
 
   @override
@@ -35,27 +48,55 @@ class _DetailedViewState extends State<DetailedView> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
           onPressed: () => Navigator.of(context).pop(),
-          splashColor: Colors.transparent,  
+          splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
-        ), 
+        ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: const [
-          HorizontalScrollPhoto(
-            imageList: [
-              'https://cdn.discordapp.com/attachments/797738827740479513/1068735195978666055/xZxIbAnBdrfM.jpg',
-              'https://img.theqoo.net/img/pXDIo.png',
-              'https://img.theqoo.net/img/YXbdu.png',
-              'https://img.theqoo.net/img/VVDEV.png',
-              'https://img.theqoo.net/img/Ptrjy.jpg',
-              'https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202208/28/e9fb2660-b8b9-403e-9c6b-6a73b781b749.jpg',
-              'https://cdn.discordapp.com/attachments/951599755488792618/999666754768867338/frame.png',
-              'https://media.istockphoto.com/id/517188688/ko/사진/산-풍경.jpg?s=1024x1024&w=is&k=20&c=6xjEh-IzcicEL9FQAqvNHHszVS6fzvyF3ptQ4kM-DBU=',
-            ]
-          ),
-          PhotoDetail(),
-        ],
+      body: SafeArea(
+        bottom: true,
+        top: true,
+        // child:
+        //   NotificationListener<ScrollNotification>(
+        //   onNotification: (notification) {
+        //     print(controller.page);
+        //     if((_currentPage - controller.page!).abs() > 0.8) {
+        //       _currentPage = controller.page!.round();
+        //     }
+        //     return true;
+        //   },
+        child: PageView(controller: controller, children: [
+          ...imageProviderList.map((e) => Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AspectRatio(
+                    aspectRatio: 2 / 3,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 8),
+                      child: PhotoView(
+                        imageProvider: e,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Transform.translate(
+                      offset: Offset(0, 0),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          // horizontal: MediaQuery.of(context).size.width * 0.065,
+                          vertical: 16,
+                        ),
+                        child: DetailedCard(
+                            url: e.url,
+                            date: "2023년 1월 28일",
+                            title: "브로커 화이팅~! 가나다라가🌟나다라가나다라가나다라가나다라가나다라",
+                            mention: ["star", "star", "star", "s"]),
+                      ),
+                    ),
+                  ),
+                ],
+              ))
+        ]),
       ),
     );
   }

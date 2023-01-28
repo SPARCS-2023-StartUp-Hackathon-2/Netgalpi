@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:netgalpi/helper/image_pixels.dart';
 
-class DefaultPhotoCard extends StatelessWidget {
-  const DefaultPhotoCard({
+class SquarePhotoCard extends StatelessWidget {
+  const SquarePhotoCard({
     super.key,
     required this.imgProvider,
   });
@@ -19,19 +19,19 @@ class DefaultPhotoCard extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.fitWidth,
               child: SizedBox(
-                  width: 2 / 3,
+                  width: 1,
                   height: 1,
                   child: Column(
                     children: [
                       AspectRatio(
-                        aspectRatio: 4 / 3,
+                        aspectRatio: 1,
                         child: ImagePixels.container(
                           imageProvider: imgProvider,
                           colorAlignment: Alignment.topLeft,
                         ),
                       ),
                       AspectRatio(
-                        aspectRatio: 4 / 3,
+                        aspectRatio: 1,
                         child: ImagePixels.container(
                           imageProvider: imgProvider,
                           colorAlignment: Alignment.bottomRight,

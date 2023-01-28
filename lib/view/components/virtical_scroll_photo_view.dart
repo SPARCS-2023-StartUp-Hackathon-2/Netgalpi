@@ -1,7 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
+import 'package:netgalpi/view/components/photo_view.dart';
 import 'package:netgalpi/view/detailed_view.dart';
 
 class VirticalScrollPhotoView extends StatelessWidget {
@@ -28,22 +28,24 @@ class VirticalScrollPhotoView extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         childAspectRatio: (itemWidth / itemHeight),
-        children: List.generate(postIdList.length, (index) {
-          return GestureDetector(
-            onTap: () {
-              if (!viewOnly)
-                Get.to(() => const DetailedView()); //postIdx: index));
-            },
-            child: Card(
-              color: Colors.white,
-              margin: const EdgeInsets.all(4.0),
+        children: List.generate(postIdList.length, (idx) {
+          return Card(
+            color: Colors.white,
+            margin: const EdgeInsets.all(4.0),
+            child: GestureDetector(
+              onTap: () {
+                if (!viewOnly) {
+                  Get.to(() => DetailedView(
+                        index: idx,
+                      ));
+                }
+              },
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
-                  child: Image(
-                      // TODO: Add Real default url for no url
-                      image: Get.find<PostListViewModel>()
-                          .postImgMap[postIdList[index]]!,
-                      fit: BoxFit.cover)),
+                  child: PhotoView(
+                    imageProvider: Get.find<PostListViewModel>()
+                        .postImgMap[postIdList[idx]]!,
+                  )),
             ),
           );
         }),
