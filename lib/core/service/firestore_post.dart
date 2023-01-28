@@ -15,6 +15,11 @@ class FirestorePost {
     return await _postCollection.doc(pid).get();
   }
 
+  Future<PostModel> getPostModelFromFirestore(String pid) async {
+    DocumentSnapshot postSnapshot = await _postCollection.doc(pid).get();
+    return PostModel.fromDocumentSnapshot(documentSnapshot: postSnapshot);
+  }
+
   Future<QuerySnapshot> getFeed() async {
     return await _postCollection
         .where("isOpened", isEqualTo: true)

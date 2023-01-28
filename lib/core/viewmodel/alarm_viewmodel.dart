@@ -19,7 +19,7 @@ class AlarmViewModel extends GetxController {
     super.onInit();
     getCurrentUser().whenComplete(() async {
       for (String pId in _currentUser!.pendingPostIdList) {
-        var pendingPost = await FirestorePost().getPostFromFirestore(pId);
+        var pendingPost = await FirestorePost().getPostModelFromFirestore(pId);
       }
     });
   }
