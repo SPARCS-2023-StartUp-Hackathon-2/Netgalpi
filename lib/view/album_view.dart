@@ -28,7 +28,7 @@ class AlbumView extends StatelessWidget {
               return Column(children: <Widget>[
                 if (controller.selectedNickName != null)
                   Text(
-                    '$controller.selectedNickName',
+                    controller.selectedNickName ?? '',
                     style: const TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.w700,

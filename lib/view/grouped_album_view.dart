@@ -4,7 +4,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
-import 'package:netgalpi/view/album_view.dart';
 
 class GroupedAlbumView extends StatelessWidget {
   const GroupedAlbumView({super.key});
@@ -75,19 +74,19 @@ class GroupedAlbumView extends StatelessWidget {
           builder: (controller) {
             return Stack(
               children: <Widget>[
-                GestureDetector(
-                  child: Container(
-                    color: Colors.white,
-                    width: double.infinity,
-                    // height: double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(namePostMapList.length, (index) {
-                        String nicknameKey =
-                            namePostMapList[index].keys.elementAt(0);
-                        List<String> postIdList =
-                            namePostMapList[index][nicknameKey]!;
-                        return Column(
+                Container(
+                  color: Colors.white,
+                  width: double.infinity,
+                  // height: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: List.generate(namePostMapList.length, (index) {
+                      String nicknameKey =
+                          namePostMapList[index].keys.elementAt(0);
+                      List<String> postIdList =
+                          namePostMapList[index][nicknameKey]!;
+                      return GestureDetector(
+                        child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
@@ -99,6 +98,8 @@ class GroupedAlbumView extends StatelessWidget {
                                 ),
                               ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: List.generate(3, (index) {
                                   var size = MediaQuery.of(context).size;
                                   final double itemWidth =
@@ -120,14 +121,15 @@ class GroupedAlbumView extends StatelessWidget {
                               SizedBox(
                                 height: 20, // <-- SEE HERE
                               ),
-                            ]);
-                      }),
-                    ),
+                            ]),
+                        onTap: () {
+                          // Click filter card view
+                          controller.setSelectedNickName(nicknameKey);
+                          Get.back();
+                        },
+                      );
+                    }),
                   ),
-                  onTap: () => {
-                    // Click filter card view
-                    // Get.off(() => const AlbumView())
-                  },
                 ),
               ],
             );
@@ -137,12 +139,26 @@ class GroupedAlbumView extends StatelessWidget {
       floatingActionButton: GestureDetector(
         child: Container(
           alignment: const Alignment(1.5, -0.62),
-          child: SvgPicture.asset(
-            'assets/bookmark.svg',
+          child: Stack(
+            alignment: Alignment(0.2, 0.0),
+            children: <Widget>[
+              SvgPicture.asset(
+                'assets/bookmark.svg',
+              ),
+              Text(
+                '함께한 친구들',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
         ),
         onTap: () {
           // set current
+          Get.find<PostListViewModel>().setSelectedNickName(null);
           Get.back(canPop: true);
         },
       ),
