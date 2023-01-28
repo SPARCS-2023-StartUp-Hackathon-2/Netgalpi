@@ -1,17 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContentModel {
-  late String contentId, contentPostId, contentImgUrl, contentText, writerId;
-  late DateTime uploadedAt;
+  late String contentId,
+      contentPostId,
+      contentImgUrl,
+      contentText,
+      writerId,
+      uploadedAt;
 
   ContentModel({
     required this.contentId,
     required this.contentPostId,
     required this.contentImgUrl,
     required this.contentText,
+    required this.uploadedAt,
     required this.writerId,
-    uploadedAt,
-  }) : uploadedAt = uploadedAt ?? DateTime.now();
+  });
 
   ContentModel.fromDocumentSnapshot(
       {required DocumentSnapshot documentSnapshot}) {

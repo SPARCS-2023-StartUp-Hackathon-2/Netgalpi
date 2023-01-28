@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  late List<String> postIdList;
-  late String userId, username, nickname, token;
+  late String userId, username, nickname;
+  late List<dynamic> postIdList, pendingPostIdList;
 
   UserModel({
     required this.userId,
     required this.username,
     required this.nickname,
-    required this.token,
     required this.postIdList,
+    required this.pendingPostIdList,
   });
 
   UserModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
     userId = documentSnapshot.id;
     username = documentSnapshot['username'];
     nickname = documentSnapshot['nickname'];
-    token = documentSnapshot['token'];
     postIdList = documentSnapshot['postIdList'];
+    pendingPostIdList = documentSnapshot['pendingPostIdList'];
   }
 
   UserModel.fromJson(Map<dynamic, dynamic> map) {
@@ -25,6 +25,7 @@ class UserModel {
     username = map['username'];
     nickname = map['nickname'];
     postIdList = map['postIdList'];
+    pendingPostIdList = map['pendingPostIdList'];
   }
 
   Map<String, dynamic> toJson() {
@@ -33,6 +34,7 @@ class UserModel {
       'username': username,
       'nickname': nickname,
       'postIdList': postIdList,
+      'pendingPostIdList': pendingPostIdList,
     };
   }
 }
