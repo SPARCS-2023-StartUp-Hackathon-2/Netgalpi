@@ -11,26 +11,25 @@ class AlbumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // initialize postList, show main album
+    const nicknameList = ['동우', '세진', '동원', '재모'];
     return Center(
       child: GetBuilder<PostListViewModel>(
           init: PostListViewModel(),
           builder: (controller) {
             return Stack(
               children: <Widget>[
-                VirticalScrollPhotoView(
-                  gridx: 2,
-                  postIdList: controller.currentPostIdList,
-                ),
+                // User Nickname - post image perview box
+                // Column(
+                //   children: List.generate(nicknameList.length, (index) => {
+                //     return
+                //   }),
+                // ),
                 GestureDetector(
-                  child: Positioned(
-                    right: 0,
-                    top: 100,
-                    child: SvgPicture.asset(
-                      'assets/bookmark.svg',
-                    ),
+                  child: SvgPicture.asset(
+                    'assets/bookmark.svg',
                   ),
                   onTap: () {
-                    // Get.to(() => group_album_view.);
+                    Get.off(() => const AlbumView());
                   },
                 ),
               ],

@@ -15,6 +15,7 @@ class AlbumView extends StatelessWidget {
       child: GetBuilder<PostListViewModel>(
           init: PostListViewModel(),
           builder: (controller) {
+            print(controller.currentPostIdList);
             return Stack(
               children: <Widget>[
                 VirticalScrollPhotoView(
@@ -22,12 +23,8 @@ class AlbumView extends StatelessWidget {
                   postIdList: controller.currentPostIdList,
                 ),
                 GestureDetector(
-                  child: Positioned(
-                    right: 0,
-                    top: 100,
-                    child: SvgPicture.asset(
-                      'assets/bookmark.svg',
-                    ),
+                  child: SvgPicture.asset(
+                    'assets/bookmark.svg',
                   ),
                   onTap: () {
                     // Get.to(() => group_album_view.);

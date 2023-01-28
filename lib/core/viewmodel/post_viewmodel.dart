@@ -43,13 +43,15 @@ class PostListViewModel extends GetxController {
   }
 
   getPost() async {
-    postList = await FirestoreApis().getPostList(_currentUser!.username)
-        as List<Map<String, dynamic>>;
+    // TODO: Use Real user name instead of test _currentUser!.username
+    postList =
+        await FirestoreApis().getPostList('test') as List<Map<String, dynamic>>;
     // set postImage map
     for (var element in postList) {
       if (element['postId'] != null) {
         postImgMap[element['postId']] =
             CachedNetworkImageProvider(element['imageUrl']);
+        currentPostIdList.add(element['postId']);
       }
     }
     print(postList);
