@@ -6,8 +6,11 @@ class FirestoreContent {
   final CollectionReference _contentCollection =
       FirebaseFirestore.instance.collection('content');
   Future<String> addContentToFirestore(ContentModel contentModel) async {
-    final docSnapshot = await _contentCollection.add(contentModel.toJson());
-    return docSnapshot.id;
+    await _contentCollection
+        .doc(contentModel.contentId)
+        .set(contentModel.toJson());
+
+    return contentModel.contentId!;
   }
 
   Future<DocumentSnapshot> getContentFromFirestore(String cid) async {
