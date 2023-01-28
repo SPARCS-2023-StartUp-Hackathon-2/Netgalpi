@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import "./filestore_content.dart";
-import "./filestore_post.dart";
-import "./filestore_user.dart";
+import 'package:firebase_storage/firebase_storage.dart';
+// import "./firestore_content.dart";
+import "./firestore_post.dart";
+import "./firestore_user.dart";
 
 class FirestoreApis {
   // API for Gallery View
