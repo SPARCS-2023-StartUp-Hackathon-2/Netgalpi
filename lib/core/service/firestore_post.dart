@@ -8,7 +8,7 @@ class FirestorePost {
   Future<String> addPostToFirestore(PostModel postModel) async {
     await _postCollection.doc(postModel.postId).set(postModel.toJson());
 
-    return postModel.postId!;
+    return postModel.postId;
   }
 
   Future<PostModel> getPostFromFirestore(String pid) async {

@@ -28,8 +28,8 @@ class FirestoreApis {
     return postList;
   }
 
-  Future<Map<String, List<PostModel>>> groupPostByUser(String username) async {
-    Map<String, List<PostModel>> postGroup = {};
+  Future<Map<String, List<String>>> groupPostByUser(String username) async {
+    Map<String, List<String>> postGroup = {};
     UserModel? user = await FirestoreUser().getUserByUsername(username);
     if (user != null) {
       for (var pid in user.postIdList) {
@@ -39,9 +39,9 @@ class FirestoreApis {
               await FirestoreUser().getUserFromFirestore(uid);
           final nickname = mentionedUser.nickname;
           if (!postGroup.containsKey(nickname)) {
-            postGroup[nickname] = [post];
+            postGroup[nickname] = [post.postId];
           } else {
-            postGroup[nickname]!.add(post);
+            postGroup[nickname]!.add(post.postId);
           }
         }
       }

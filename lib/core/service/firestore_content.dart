@@ -10,7 +10,7 @@ class FirestoreContent {
         .doc(contentModel.contentId)
         .set(contentModel.toJson());
 
-    return contentModel.contentId!;
+    return contentModel.contentId;
   }
 
   Future<DocumentSnapshot> getContentFromFirestore(String cid) async {

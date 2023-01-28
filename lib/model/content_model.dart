@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContentModel {
-  String? contentId;
-  late String contentPostId, contentImgUrl, contentText, writerId, uploadedAt;
+  late String contentId,
+      contentPostId,
+      contentImgUrl,
+      contentText,
+      writerId,
+      uploadedAt;
 
   ContentModel({
     required this.contentId,

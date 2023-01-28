@@ -17,6 +17,7 @@ class LocalStorageUser {
           json.decode(prefs.getString('user')!) as Map<dynamic, dynamic>);
     } catch (e) {
       print('failed to getuserdata');
+      return null;
     }
   }
 
