@@ -7,7 +7,8 @@ import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/alarm_viewmodel.dart';
 import 'package:netgalpi/helper/datetime_parsor.dart';
 import 'package:netgalpi/model/post_model.dart';
-import 'package:netgalpi/view/components/default_photo_card.dart';
+
+import 'components/photo_view.dart';
 
 class AlarmView extends GetWidget<AlarmViewModel> {
   PostModel pm = PostModel(
@@ -46,8 +47,8 @@ class AlarmView extends GetWidget<AlarmViewModel> {
                     Container(
                       height: 108,
                       width: 72,
-                      child: DefaultPhotoCard(
-                          imgProvider: new CachedNetworkImageProvider(
+                      child: PhotoView(
+                          imageProvider: new CachedNetworkImageProvider(
                               controller.alarmList[index].imageUrl)),
                     ),
                     SizedBox(width: 30),
