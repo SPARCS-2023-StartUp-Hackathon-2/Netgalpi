@@ -1,16 +1,34 @@
-# Netgalpi
+# 넷갈피(Netgalpi)
+> SPARCS 2023 STARTUP HACKATHON Team K
 
-A new Flutter project.
+# Topic
+* 지나간 추억을 함께한 사람들끼리 되새겨 볼 수 있는 기억을 제공합니다
 
-## Getting Started
+# Developer Information
+* [김태연](https://github.com/tykim5931) (DGIST 19)
+* [문동우](https://github.com/snaoyam) (KAIST 20)
+* [정세진](https://github.com/asjay18) (고려대 20)
+* [정재모](http://github.com/JaemoJeong) (KAIST 20)
+* [최동원](http://github.com/chlehdwon) (KAIST 18)
 
-This project is a starting point for a Flutter application.
+# Stacks
+<div align=center> 
+<img src="https://img.shields.io/badge/flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white">
+<img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
+</div>
 
-A few resources to get you started if this is your first Flutter project:
+# Service Information
+## 0. 로그인화면
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 1. 갤러리 뷰
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 2. 갤러리 추억 뷰
+
+## 3. 갤러리 업로드
+
+## 4. 추억 업로드
+
+## 5. 알림 기능
