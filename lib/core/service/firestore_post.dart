@@ -6,9 +6,15 @@ class FirestorePost {
   final CollectionReference _postCollection =
       FirebaseFirestore.instance.collection('post');
   Future<String> addPostToFirestore(PostModel postModel) async {
-    await _postCollection.doc(postModel.postId).set(postModel.toJson());
+    return await _postCollection
+        .add(postModel.toJson())
+        .then((docRef) => docRef.id);
+  }
 
-    return postModel.postId;
+  updatePostToFireStore(PostModel newPostModel) async {
+    return await _postCollection
+        .doc(newPostModel.postId)
+        .update(newPostModel.toJson());
   }
 
   Future<PostModel> getPostFromFirestore(String pid) async {
