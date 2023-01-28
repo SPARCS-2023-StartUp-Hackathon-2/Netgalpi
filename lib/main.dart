@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       initialBinding: Binding(),
       //home: const ControlView(),
-      home: LoginView(),
+      home: ControlView(),
       debugShowCheckedModeBanner: false,
       title: '넷갈피',
     );
