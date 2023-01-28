@@ -19,8 +19,6 @@ class ControlView extends StatelessWidget {
 
   getUser() async {
     user = await LocalStorageUser.getUserData();
-    print('resultOfGetUser');
-    print(user?.userId);
   }
 
   @override

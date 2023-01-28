@@ -72,7 +72,6 @@ class PostListViewModel extends GetxController {
   void setGroupedPostIdListMap() async {
     // _currentUser!.userId
     groupedPostIdListMap = await FirestoreApis().groupPostByUser('test');
-    print(groupedPostIdListMap);
     update();
   }
 }
