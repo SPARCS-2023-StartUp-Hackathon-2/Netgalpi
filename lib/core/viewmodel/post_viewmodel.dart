@@ -19,6 +19,8 @@ class PostListViewModel extends GetxController {
   Map<String, CachedNetworkImageProvider> postImgMap = {};
   List<String> currentPostIdList = [];
 
+  String? selectedNickName;
+
   // ====== Get user data ======
   UserModel? _currentUser;
   UserModel? get currentUser => _currentUser;
@@ -52,6 +54,7 @@ class PostListViewModel extends GetxController {
       currentPostIdList.add(element.postId);
     }
     print(currentPostIdList);
+    update();
   }
   // =================================
 

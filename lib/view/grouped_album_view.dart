@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
-import 'package:netgalpi/view/components/square_photo_card.dart';
+import 'package:netgalpi/view/album_view.dart';
 
 class GroupedAlbumView extends StatelessWidget {
   const GroupedAlbumView({super.key});
@@ -39,53 +41,111 @@ class GroupedAlbumView extends StatelessWidget {
           'rBi45E2Ldz1Qx58K5Buu'
         ]
       },
+      {
+        '도연': [
+          'rBi45E2Ldz1Qx58K5Buu',
+          'rBi45E2Ldz1Qx58K5Buu',
+          'rBi45E2Ldz1Qx58K5Buu'
+        ]
+      },
+      {
+        '태연': [
+          'rBi45E2Ldz1Qx58K5Buu',
+          'rBi45E2Ldz1Qx58K5Buu',
+          'rBi45E2Ldz1Qx58K5Buu'
+        ]
+      },
+      {
+        'xdjfks': [
+          'rBi45E2Ldz1Qx58K5Buu',
+          'rBi45E2Ldz1Qx58K5Buu',
+          'rBi45E2Ldz1Qx58K5Buu'
+        ]
+      },
     ];
-    return GetBuilder<PostListViewModel>(
-      builder: (controller) {
-        return Stack(
-          children: <Widget>[
-            Column(
-              children: List.generate(namePostMapList.length, (index) {
-                String nicknameKey = namePostMapList[index].keys.elementAt(0);
-                List<String> postIdList = namePostMapList[index][nicknameKey]!;
-                return Column(children: <Widget>[
-                  Text(
-                    nicknameKey,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.red,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
+      body: SingleChildScrollView(
+        child: GetBuilder<PostListViewModel>(
+          builder: (controller) {
+            return Stack(
+              children: <Widget>[
+                GestureDetector(
+                  child: Container(
+                    color: Colors.white,
+                    width: double.infinity,
+                    // height: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(namePostMapList.length, (index) {
+                        String nicknameKey =
+                            namePostMapList[index].keys.elementAt(0);
+                        List<String> postIdList =
+                            namePostMapList[index][nicknameKey]!;
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                nicknameKey,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  color: gray700,
+                                ),
+                              ),
+                              Row(
+                                children: List.generate(3, (index) {
+                                  var size = MediaQuery.of(context).size;
+                                  final double itemWidth =
+                                      size.width / 3 - 4 * 4;
+                                  return ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: SizedBox(
+                                        height: itemWidth,
+                                        width: itemWidth,
+                                        child: Image(
+                                          image: controller
+                                              .postImgMap[postIdList[index]]!,
+                                          fit: BoxFit.cover,
+                                        )),
+                                  );
+                                }),
+                              ),
+                              // ignore: prefer_const_constructors
+                              SizedBox(
+                                height: 20, // <-- SEE HERE
+                              ),
+                            ]);
+                      }),
                     ),
                   ),
-                  // Row(
-                  //   children: List.generate(3, (index) {
-                  //     if (controller.postImgMap[postIdList[index]] != null) {
-                  //       return SquarePhotoCard(
-                  //           imgProvider:
-                  //               controller.postImgMap[postIdList[index]]!);
-                  //     }
-                  //     return const Text('아직 찍은 사진이 없어요!');
-                  //   }),
-                  // )
-                ]);
-              }),
-            ),
-            Positioned(
-              top: 60,
-              right: -60,
-              child: GestureDetector(
-                child: SvgPicture.asset(
-                  'assets/bookmark.svg',
+                  onTap: () => {
+                    // Click filter card view
+                    // Get.off(() => const AlbumView())
+                  },
                 ),
-                onTap: () {
-                  // Get.off(() => AlbumView());
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ],
-        );
-      },
+              ],
+            );
+          },
+        ),
+      ),
+      floatingActionButton: GestureDetector(
+        child: Container(
+          alignment: const Alignment(1.5, -0.62),
+          child: SvgPicture.asset(
+            'assets/bookmark.svg',
+          ),
+        ),
+        onTap: () {
+          // set current
+          Get.back(canPop: true);
+        },
+      ),
     );
   }
 }
