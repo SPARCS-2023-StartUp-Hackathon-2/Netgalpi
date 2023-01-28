@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/model/post_model.dart';
@@ -12,18 +13,26 @@ List<String> imgUrlList = [
 
 class PostListViewModel extends GetxController {
   List<PostModel> postList = [];
+  Map<String, CachedNetworkImageProvider> postImgMap = {};
+  List<String> currentPostIdList = [];
 
   void setPostList(List<PostModel> newPostList) {
     postList = newPostList;
+    // set postIdList and postImgMap
+    for (var element in postList) {
+      if (element.postId != null) {
+        postImgMap[element.postId!] =
+            CachedNetworkImageProvider(element.imageUrl);
+      }
+    }
+  }
+
+  void setCurrentPostIdList(List<String> postIdList) {
+    currentPostIdList = [...postIdList];
   }
 
   void addNewPost(PostModel newPost) {
     postList.add(newPost);
-  }
-
-  void deletePost(String postId) {
-    const postIdList = postList.map((post) => postId);
-    const postIndex = postIdList.
-    postList[post]
+    postImgMap[newPost.postId!] = CachedNetworkImageProvider(newPost.imageUrl);
   }
 }
