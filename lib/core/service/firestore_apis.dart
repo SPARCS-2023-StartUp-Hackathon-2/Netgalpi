@@ -55,22 +55,18 @@ class FirestoreApis {
     return await FirestorePost().getFeed();
   }
 
-  // // API for Upload View
-  // Future<bool> mentionValidator(String username) async {
-  //   QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
+  // API for Upload View
+  Future<bool> mentionValidator(String username) async {
+    UserModel? snapshot = await FirestoreUser().getUserByUsername(username);
 
-  //   return snapshot.size != 0;
-  // }
+    return snapshot != null;
+  }
 
-  // uploadPost(String pid) async {
-  //   DocumentSnapshot postSnapshot =
-  //       await FirestorePost().getPostFromFirestore(pid);
-  //   final post = postSnapshot.data() as Map<String, dynamic>;
-  //   for (var uid in post["mentionIdList"]) {
-  //     DocumentSnapshot userSnapshot =
-  //         await FirestoreUser().getUserFromFirestore(uid);
-  //     final user = userSnapshot.data() as Map<String, dynamic>;
-  //     user["pendingPostIdList"].add(post["pid"]);
-  //   }
-  // }
+  uploadPost(String pid) async {
+    PostModel post = await FirestorePost().getPostFromFirestore(pid);
+    for (var uid in post.mentionIdList) {
+      UserModel user = await FirestoreUser().getUserFromFirestore(uid);
+      user.pendingPostIdList.add(post.postId);
+    }
+  }
 }
