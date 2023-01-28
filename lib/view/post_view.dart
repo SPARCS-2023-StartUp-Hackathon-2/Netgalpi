@@ -1,7 +1,11 @@
 import 'dart:ui';
 
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/view/components/photo_card.dart';
 
 import '../helper/datetime_parsor.dart';
@@ -39,10 +43,19 @@ class _PostViewState extends State<PostView> {
               foregroundColor: Colors.transparent,
               backgroundColor: Colors.transparent,
               systemOverlayStyle: SystemUiOverlayStyle.dark,
+              leadingWidth: 110,
               actions: <Widget>[
                 IconButton(
-                  icon: const Icon(Icons.close, size: 32, color: Colors.black),
+                  alignment: Alignment.centerLeft,
+                  icon: const Icon(EvaIcons.collapse, size: 32, color: gray500),
                   onPressed: () => Navigator.of(context).pop(),
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                ),
+                IconButton(
+                  icon: const Icon(EvaIcons.editOutline,
+                      size: 32, color: gray500),
+                  onPressed: () => {},
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                 ),
