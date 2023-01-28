@@ -4,6 +4,10 @@
 # Topic
 * 지나간 추억을 함께한 사람들끼리 되새겨 볼 수 있는 기억을 제공합니다
 
+# Key Features
+* 하루의 추억이 담긴 사진들을 모아 보여줍니다.
+* 
+
 # Developer Information
 * [김태연](https://github.com/tykim5931) (DGIST 19)
 * [문동우](https://github.com/snaoyam) (KAIST 20)
