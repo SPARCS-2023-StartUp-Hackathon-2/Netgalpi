@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:netgalpi/model/post_model.dart';
+import 'package:netgalpi/core/service/firestore_apis.dart';
+
+import '../../model/user_model.dart';
+import '../service/local_storage_user.dart';
 
 List<String> imgUrlList = [
   'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/a8d1f618-7481-41f3-abc2-396a3b567684/IMG_5854.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230128T070504Z&X-Amz-Expires=86400&X-Amz-Signature=070fea7167c40f912ebf0f123b04bd5dac4c2d36eb4912299e0188ec03e38197&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22IMG_5854.JPG.jpg%22&x-id=GetObject',
@@ -12,27 +14,55 @@ List<String> imgUrlList = [
 ];
 
 class PostListViewModel extends GetxController {
-  List<PostModel> postList = [];
+  List<Map<String, dynamic>> postList = [];
   Map<String, CachedNetworkImageProvider> postImgMap = {};
   List<String> currentPostIdList = [];
 
-  void setPostList(List<PostModel> newPostList) {
-    postList = newPostList;
-    // set postIdList and postImgMap
+  // ====== Get user data ======
+  UserModel? _currentUser;
+  UserModel? get currentUser => _currentUser;
+
+  bool _loading = false;
+  bool get loading => _loading;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getCurrentUser().whenComplete(() => getPost());
+  }
+
+  @override
+  void onReady() async {
+    update();
+  }
+
+  getCurrentUser() async {
+    _loading = true;
+    _currentUser = await LocalStorageUser.getUserData();
+    _loading = false;
+  }
+
+  getPost() async {
+    postList = await FirestoreApis().getPostList(_currentUser!.username)
+        as List<Map<String, dynamic>>;
+    // set postImage map
     for (var element in postList) {
-      if (element.postId != null) {
-        postImgMap[element.postId!] =
-            CachedNetworkImageProvider(element.imageUrl);
+      if (element['postId'] != null) {
+        postImgMap[element['postId']] =
+            CachedNetworkImageProvider(element['imageUrl']);
       }
     }
+    print(postList);
   }
+  // =================================
 
   void setCurrentPostIdList(List<String> postIdList) {
     currentPostIdList = [...postIdList];
   }
 
-  void addNewPost(PostModel newPost) {
+  void addNewPost(Map<String, dynamic> newPost) {
     postList.add(newPost);
-    postImgMap[newPost.postId!] = CachedNetworkImageProvider(newPost.imageUrl);
+    postImgMap[newPost['postId']] =
+        CachedNetworkImageProvider(newPost['imageUrl']);
   }
 }
