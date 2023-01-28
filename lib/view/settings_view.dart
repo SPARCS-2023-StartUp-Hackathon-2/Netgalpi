@@ -1,5 +1,5 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:netgalpi/view/components/layout.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netgalpi/constants.dart';
@@ -27,45 +27,7 @@ class SettingsView extends StatelessWidget {
             case ConnectionState.waiting:
               return const CircularProgressIndicator();
             case ConnectionState.done:
-              return Scaffold(
-                appBar: AppBar(
-                  backgroundColor: const Color.fromRGBO(255, 255, 255, 0.5),
-                  elevation: 0.0,
-                  iconTheme: const IconThemeData(color: gray500),
-                  leading: Text(
-                    ' Netgalfi',
-                    style: GoogleFonts.dawningOfANewDay(
-                      textStyle: TextStyle(
-                        fontSize: 36,
-                        letterSpacing: 0.1,
-                        color: gray700,
-                      ),
-                    ),
-                  ),
-                  leadingWidth: 110,
-                  actions: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        EvaIcons.plusSquareOutline,
-                        size: 30.0,
-                      ),
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        Get.to(() => AlarmView());
-                      },
-                      icon: Icon(
-                        EvaIcons.bellOutline,
-                        size: 30.0,
-                      ),
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                    )
-                  ],
-                ), //CustomAppBar(),
+              return LayoutWidget(
                 body: Container(
                   color: Colors.white,
                   width: MediaQuery.of(context).size.width,
