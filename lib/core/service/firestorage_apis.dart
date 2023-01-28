@@ -8,9 +8,9 @@ Reference postRef = imagesRef.child("post");
 Reference contentRef = imagesRef.child("ref");
 
 class FireStorage {
-  Future<String> uploadPostImg(File file) async {
+  Future<String> uploadPostImg(File file, String pid) async {
     try {
-      await postRef.putFile(file);
+      await postRef.child(pid).putFile(file);
 
       return await postRef.getDownloadURL();
     } on FirebaseException catch (e) {
@@ -19,9 +19,9 @@ class FireStorage {
     }
   }
 
-  Future<String> uploadContentImg(File file) async {
+  Future<String> uploadContentImg(File file, String cid) async {
     try {
-      await contentRef.putFile(file);
+      await contentRef.child(cid).putFile(file);
 
       return await contentRef.getDownloadURL();
     } on FirebaseException catch (e) {
@@ -30,9 +30,9 @@ class FireStorage {
     }
   }
 
-  Future<String> uploadVideo(File file) async {
+  Future<String> uploadVideo(File file, String pid) async {
     try {
-      await videoRef.putFile(file);
+      await videoRef.child(pid).putFile(file);
 
       return await videoRef.getDownloadURL();
     } on FirebaseException catch (e) {
