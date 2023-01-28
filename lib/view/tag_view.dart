@@ -192,6 +192,7 @@ class _TagViewState extends State<TagView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
+<<<<<<< Updated upstream
                               padding: EdgeInsets.fromLTRB(10, 30, 50, 20),
                             child: TextButton(
                               onPressed: () { _image!=null? _image=null: _image=null;},
@@ -201,6 +202,25 @@ class _TagViewState extends State<TagView> {
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, height: 1, color: btnColor),
                               ),
                             ),
+=======
+                        padding: EdgeInsets.fromLTRB(10, 30, 50, 20),
+                        child: TextButton(
+                          onPressed: () {
+                            controller.check = _checkBoxValue1;
+                            controller.mentionList = mentionList;
+                            controller.finalPost(controller.imageUrl!, "mp4",
+                                title, _checkBoxValue1, mentionList);
+                            //GetX.to()
+                          },
+                          child: Text(
+                            '다음',
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                height: 1,
+                                color: btnColor),
+>>>>>>> Stashed changes
                           ),
                     ],
                   ),
