@@ -10,12 +10,9 @@
 * 멘션을 통해 함께한 사람들과 사진을 공유할 수 있습니다.
 * 피드를 통해 더 많은 사람들과 기억을 소통할 수 있습니다.
 
-# Developer Information
-* [김태연](https://github.com/tykim5931) (DGIST 19)
-* [문동우](https://github.com/snaoyam) (KAIST 20)
-* [정세진](https://github.com/asjay18) (고려대 20)
-* [정재모](http://github.com/JaemoJeong) (KAIST 20)
-* [최동원](http://github.com/chlehdwon) (KAIST 18)
+# Service Information
+
+
 
 # Stacks
 <div align=center> 
@@ -27,3 +24,9 @@
 <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
 </div>
 
+# Developer Information
+* [김태연](https://github.com/tykim5931) (DGIST 19)
+* [문동우](https://github.com/snaoyam) (KAIST 20)
+* [정세진](https://github.com/asjay18) (고려대 20)
+* [정재모](http://github.com/JaemoJeong) (KAIST 20)
+* [최동원](http://github.com/chlehdwon) (KAIST 18)
