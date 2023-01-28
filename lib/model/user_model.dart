@@ -9,7 +9,6 @@ class UserModel {
     this.userId,
     required this.username,
     required this.nickname,
-    required this.token,
     required this.postIdList,
   });
 
@@ -17,7 +16,6 @@ class UserModel {
     userId = documentSnapshot.id;
     username = documentSnapshot['username'];
     nickname = documentSnapshot['nickname'];
-    token = documentSnapshot['token'];
     postIdList = documentSnapshot['postIdList'];
   }
 
