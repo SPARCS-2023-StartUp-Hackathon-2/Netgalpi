@@ -22,7 +22,7 @@ class PostModel {
   });
 
   PostModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
-    postId = documentSnapshot.id;
+    postId = documentSnapshot['postId'];
     imageUrl = documentSnapshot['imageUrl'];
     mp4Url = documentSnapshot['mp4Url'];
     title = documentSnapshot['title'];

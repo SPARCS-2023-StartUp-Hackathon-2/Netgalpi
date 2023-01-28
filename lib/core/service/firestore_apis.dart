@@ -6,13 +6,20 @@ import "./firestore_user.dart";
 
 class FirestoreApis {
   // API for Gallery View
-  Future<String> getPostList(String username) async {
+  Future<List<dynamic>> getPostList(String username) async {
     QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
     if (snapshot.size == 0) {
-      return "";
+      return [];
     } else {
-      var data = snapshot.docs[0].data() as Map<String, dynamic>;
-      return data["postIdList"];
+      final data = snapshot.docs[0].data() as Map<String, dynamic>;
+      List<dynamic> postList = [];
+      for (var postId in data["postIdList"]) {
+        await FirestorePost()
+            .getPostFromFirestore(postId)
+            .then((snapshot) => postList.add(snapshot.data()));
+      }
+
+      return postList;
     }
   }
 
