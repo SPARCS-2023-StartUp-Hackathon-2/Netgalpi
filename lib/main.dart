@@ -24,8 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: Binding(),
-      //home: const ControlView(),
-      home: UploadView(),
+      home: ControlView(),
       debugShowCheckedModeBanner: false,
       title: '넷갈피',
     );
