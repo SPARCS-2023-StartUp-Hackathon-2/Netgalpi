@@ -124,6 +124,8 @@ class FirestoreApis {
         user.postIdList.add(pid);
       }
 
+      await FirestoreUser().updateUserToFireStore(user);
+
       return true;
     } catch (e) {
       print("error $e");
