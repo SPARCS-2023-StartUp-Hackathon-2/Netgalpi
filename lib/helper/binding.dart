@@ -9,7 +9,7 @@ import '../core/viewmodel/album_viewmodel.dart';
 class Binding extends Bindings {
   @override
   void dependencies() {
-    Get.put(() => AuthViewModel());
+    Get.lazyPut(() => AuthViewModel());
     Get.lazyPut(() => AlbumViewModel());
     Get.lazyPut(() => AlarmViewModel());
     Get.lazyPut(() => PostListViewModel());

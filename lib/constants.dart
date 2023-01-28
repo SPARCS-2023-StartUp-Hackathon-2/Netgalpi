@@ -24,6 +24,7 @@ const Color beige700 = Color(0xFF605044);
 const Color beige800 = Color(0xFF413227);
 const Color beige900 = Color(0xFF211303);
 
+const Color gray10 = Color(0xFFCDCDCD);
 const Color gray50 = Color(0xFFABABAB);
 const Color gray100 = Color(0xFFA6A6A6);
 const Color gray200 = Color(0xFFA0A0A0);
