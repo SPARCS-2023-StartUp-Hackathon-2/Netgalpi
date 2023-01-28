@@ -113,6 +113,9 @@ class GroupedAlbumView extends StatelessWidget {
         onTap: () {
           // set current
           Get.find<PostListViewModel>().setSelectedNickName(null);
+          var postImgMap = Get.find<PostListViewModel>().postImgMap;
+          Get.find<PostListViewModel>()
+              .setCurrentPostIdList(postImgMap.keys.toList());
           Get.back(canPop: true);
         },
       ),
