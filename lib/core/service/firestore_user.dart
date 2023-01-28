@@ -9,6 +9,12 @@ class FirestoreUser {
     await _userCollection.doc(userModel.userId).set(userModel.toJson());
   }
 
+  updateUserToFireStore(UserModel newUserModel) async {
+    return await _userCollection
+        .doc(newUserModel.userId)
+        .update(newUserModel.toJson());
+  }
+
   Future<UserModel> getUserFromFirestore(String uid) async {
     DocumentSnapshot user = await _userCollection.doc(uid).get();
     return UserModel.fromDocumentSnapshot(documentSnapshot: user);

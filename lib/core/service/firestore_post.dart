@@ -11,6 +11,12 @@ class FirestorePost {
         .then((docRef) => docRef.id);
   }
 
+  updatePostToFireStore(PostModel newPostModel) async {
+    return await _postCollection
+        .doc(newPostModel.postId)
+        .update(newPostModel.toJson());
+  }
+
   Future<PostModel> getPostFromFirestore(String pid) async {
     DocumentSnapshot post = await _postCollection.doc(pid).get();
     return PostModel.fromDocumentSnapshot(documentSnapshot: post);
