@@ -37,4 +37,24 @@ class AlarmViewModel extends GetxController {
 
     update();
   }
+
+  Future<bool> deletePending(String pid, bool isAccepted) async {
+    try {
+      _currentUser!.pendingPostIdList.removeWhere((item) => item == pid);
+      alarmList.removeWhere((item) => item.postId == pid);
+
+      if (isAccepted) {
+        _currentUser!.postIdList.add(pid);
+      }
+
+      await FirestoreUser().updateUserToFireStore(_currentUser!);
+
+      update();
+      return true;
+    } catch (e) {
+      print("error $e");
+
+      return false;
+    }
+  }
 }

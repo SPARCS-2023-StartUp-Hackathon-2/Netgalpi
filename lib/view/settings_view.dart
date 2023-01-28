@@ -18,7 +18,7 @@ class SettingsView extends StatelessWidget {
           ' Netgalfi',
           style: GoogleFonts.dawningOfANewDay(
             textStyle: TextStyle(
-              fontSize: 28,
+              fontSize: 36,
               letterSpacing: 0.1,
               color: gray700,
             ),

@@ -87,7 +87,8 @@ class AlarmView extends GetWidget<AlarmViewModel> {
                           child: Row(children: [
                             FilledButton(
                               onPressed: () {
-                                //deletePending(accpted false)
+                                controller.deletePending(
+                                    controller.alarmList[index].postId, false);
                               },
                               child: Text(
                                 '거절',
@@ -104,8 +105,9 @@ class AlarmView extends GetWidget<AlarmViewModel> {
                             SizedBox(width: 10),
                             FilledButton(
                               onPressed: () {
-                                //deletePending(accpted true)
-                                //Get.to(()=>Detailview(index인자로))
+                                controller.deletePending(
+                                    controller.alarmList[index].postId, true);
+                                //Get.to(() => Detailview(index인자로));
                               },
                               child: Text(
                                 '수락',
