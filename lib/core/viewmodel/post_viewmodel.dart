@@ -44,8 +44,7 @@ class PostListViewModel extends GetxController {
 
   getPost() async {
     // TODO: Use Real user name instead of test _currentUser!.username
-    postList =
-        await FirestoreApis().getPostList('test') as List<Map<String, dynamic>>;
+    postList = await FirestoreApis().getPostList('test');
     // set postImage map
     for (var element in postList) {
       if (element['postId'] != null) {
@@ -54,7 +53,7 @@ class PostListViewModel extends GetxController {
         currentPostIdList.add(element['postId']);
       }
     }
-    print(postList);
+    print(currentPostIdList);
   }
   // =================================
 
