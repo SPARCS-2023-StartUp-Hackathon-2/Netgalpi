@@ -1,7 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../model/post_model.dart';
-import '../../model/user_model.dart';
-import '../../model/content_model.dart';
 import "./filestore_content.dart";
 import "./filestore_post.dart";
 import "./filestore_user.dart";
@@ -15,22 +12,21 @@ class FirestoreApis {
       FirebaseFirestore.instance.collection('content');
 
   // API for Gallery View
-  getPostList(String username) async {
+  Future<String> getPostList(String username) async {
     QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
     if (snapshot.size == 0) {
-      return null;
+      return "";
     } else {
       var data = snapshot.docs[0].data() as Map<String, dynamic>;
       return data["postIdList"];
     }
   }
 
-  groupPostByUser(String username) async {
+  Future<Map<String, List<Map<String, dynamic>>>> groupPostByUser(
+      String username) async {
     QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
-    if (snapshot.size == 0) {
-      return null;
-    } else {
-      Map<String, List<Map<String, dynamic>>> postGroup = {};
+    Map<String, List<Map<String, dynamic>>> postGroup = {};
+    if (snapshot.size != 0) {
       for (var doc in snapshot.docs) {
         var post = doc.data() as Map<String, dynamic>;
         for (var user in post["mentionIdList"]) {
@@ -41,15 +37,40 @@ class FirestoreApis {
           }
         }
       }
-
-      return postGroup;
     }
+
+    return postGroup;
+  }
+
+  // API for Feed View
+  Future<List<String>> getFeedList() async {
+    QuerySnapshot snapshot = await FirestorePost().getFeed();
+    List<String> feedPost = [];
+    if (snapshot.size != 0) {
+      for (var doc in snapshot.docs) {
+        feedPost.add(doc.id);
+      }
+    }
+
+    return feedPost;
   }
 
   // API for Upload View
-  mentionValidator(String username) async {
+  Future<bool> mentionValidator(String username) async {
     QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
 
     return snapshot.size != 0;
+  }
+
+  uploadPost(String pid) async {
+    DocumentSnapshot postSnapshot =
+        await FirestorePost().getPostFromFirestore(pid);
+    final post = postSnapshot.data() as Map<String, dynamic>;
+    for (var uid in post["mentionIdList"]) {
+      DocumentSnapshot userSnapshot =
+          await FirestoreUser().getUserFromFirestore(uid);
+      final user = userSnapshot.data() as Map<String, dynamic>;
+      user["pendingPostIdList"].add(post["pid"]);
+    }
   }
 }

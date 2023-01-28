@@ -6,7 +6,7 @@ class FirestoreUser {
   final CollectionReference _userCollection =
       FirebaseFirestore.instance.collection('user');
   Future<String> addUserToFirestore(UserModel userModel) async {
-    var docSnapshot = await _userCollection.add(userModel.toJson());
+    final docSnapshot = await _userCollection.add(userModel.toJson());
     return docSnapshot.id;
   }
 

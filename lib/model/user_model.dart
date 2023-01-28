@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  late List<String> postIdList, pendingPostIdList;
-  late String username, nickname, token;
+  late List<dynamic> postIdList, pendingPostIdList;
+  late String username, nickname;
   String? userId;
 
   UserModel({

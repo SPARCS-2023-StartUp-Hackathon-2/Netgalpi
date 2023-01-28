@@ -5,7 +5,7 @@ class PostModel {
   late DateTime uploadedAt;
   late int likesCount;
   late bool isOpened;
-  late List<String> mentionIdList, likerIdList, contentIdList;
+  late List<dynamic> mentionIdList, likerIdList, contentIdList;
 
   PostModel({
     required this.postId,
