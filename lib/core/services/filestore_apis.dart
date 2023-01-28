@@ -14,6 +14,7 @@ class FirestoreApis {
   final CollectionReference _contentCollection =
       FirebaseFirestore.instance.collection('content');
 
+  // API for Gallery View
   getPostList(String username) async {
     QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
     if (snapshot.size == 0) {
@@ -45,5 +46,10 @@ class FirestoreApis {
     }
   }
 
-  getPhotoUrl(String pid) async {}
+  // API for Upload View
+  mentionValidator(String username) async {
+    QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
+
+    return snapshot.size != 0;
+  }
 }

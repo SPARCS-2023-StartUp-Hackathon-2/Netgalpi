@@ -5,8 +5,9 @@ import '../../model/post_model.dart';
 class FirestorePost {
   final CollectionReference _postCollection =
       FirebaseFirestore.instance.collection('post');
-  addPostToFirestore(PostModel postModel) async {
-    await _postCollection.doc(postModel.postId).set(postModel.toJson());
+  Future<String> addPostToFirestore(PostModel postModel) async {
+    var docSnapshot = await _postCollection.add(postModel.toJson());
+    return docSnapshot.id;
   }
 
   Future<DocumentSnapshot> getPostFromFirestore(String pid) async {
