@@ -8,17 +8,25 @@ class FirestorePost {
   Future<String> addPostToFirestore(PostModel postModel) async {
     await _postCollection.doc(postModel.postId).set(postModel.toJson());
 
-    return postModel.postId!;
+    return postModel.postId;
   }
 
-  Future<DocumentSnapshot> getPostFromFirestore(String pid) async {
-    return await _postCollection.doc(pid).get();
+  Future<PostModel> getPostFromFirestore(String pid) async {
+    DocumentSnapshot post = await _postCollection.doc(pid).get();
+    return PostModel.fromDocumentSnapshot(documentSnapshot: post);
   }
 
-  Future<QuerySnapshot> getFeed() async {
-    return await _postCollection
-        .where("isOpened", isEqualTo: true)
-        .orderBy("uploadedAt")
-        .get();
+  Future<List<PostModel>> getFeed() async {
+    QuerySnapshot feeds =
+        await _postCollection.where("isOpened", isEqualTo: true).get();
+    if (feeds.size == 0) {
+      return [];
+    } else {
+      List<PostModel> feedList = [];
+      for (var doc in feeds.docs) {
+        feedList.add(PostModel.fromDocumentSnapshot(documentSnapshot: doc));
+      }
+      return feedList;
+    }
   }
 }

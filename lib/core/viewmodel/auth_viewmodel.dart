@@ -44,9 +44,8 @@ class AuthViewModel extends GetxController {
           .signInWithEmailAndPassword(
               email: '${username!}@netgalpi.com', password: password!)
           .then((user) {
-        FirestoreUser().getUserFromFirestore(user.user!.uid).then((doc) {
-          saveUserLocal(
-              UserModel.fromJson(doc.data() as Map<dynamic, dynamic>));
+        FirestoreUser().getUserFromFirestore(user.user!.uid).then((user) {
+          saveUserLocal(user);
         });
       });
       Get.offAll(ControlView());

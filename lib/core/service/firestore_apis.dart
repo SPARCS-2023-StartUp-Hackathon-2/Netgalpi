@@ -1,58 +1,47 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// import "./firestore_content.dart";
+import "package:get/get.dart";
+import "./firestore_content.dart";
 import "./firestore_post.dart";
 import "./firestore_user.dart";
 
+import "../../model/post_model.dart";
+import "../../model/user_model.dart";
+import "../../model/content_model.dart";
+
 class FirestoreApis {
+  final postModelApi = FirestorePost();
+  final userApi = FirestoreUser();
+  final contentApi = FirestoreContent();
+
   // API for Gallery View
-  Future<Map<String, dynamic>> getUserByUid(String uid) async {
-    return await FirestoreUser()
-        .getUserFromFirestore(uid)
-        .then((snapshot) => snapshot.data() as Map<String, dynamic>);
-  }
-
-  Future<Map<String, dynamic>> getPostByPid(String pid) async {
-    return await FirestorePost()
-        .getPostFromFirestore(pid)
-        .then((snapshot) => snapshot.data() as Map<String, dynamic>);
-  }
-
-  Future<Map<String, dynamic>> getUserByUsername(String username) async {
-    QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
-    if (snapshot.size == 0) {
-      return {};
-    } else {
-      return snapshot.docs[0].data() as Map<String, dynamic>;
-    }
-  }
-
-  Future<List<Map<String, dynamic>>> getPostList(String username) async {
-    final user = await getUserByUsername(username);
-    List<Map<String, dynamic>> postList = [];
-    if (user.isNotEmpty) {
-      for (var postId in user["postIdList"]) {
-        await FirestorePost().getPostFromFirestore(postId).then((snapshot) =>
-            postList.add(snapshot.data() as Map<String, dynamic>));
+  Future<List<PostModel>> getPostList(String username) async {
+    UserModel? user = await FirestoreUser().getUserByUsername(username);
+    List<PostModel> postList = [];
+    if (user != null) {
+      for (var postId in user.postIdList) {
+        postList.add(await FirestorePost().getPostFromFirestore(postId));
       }
     }
+    postList.sort((a, b) => b.uploadedAt.compareTo(a.uploadedAt));
 
     return postList;
   }
 
-  Future<Map<String, List<dynamic>>> groupPostByUser(String username) async {
-    Map<String, List<dynamic>> postGroup = {};
-    Map<String, dynamic> user = await getUserByUsername(username);
-    if (user.isNotEmpty) {
-      for (var pid in user["postIdList"]) {
-        Map<String, dynamic> post = await getPostByPid(pid);
-        for (var uid in post["mentionIdList"]) {
-          final nickname =
-              await getUserByUid(uid).then((user) => user["nickname"]);
+  Future<Map<String, List<String>>> groupPostByUser(String username) async {
+    Map<String, List<String>> postGroup = {};
+    UserModel? user = await FirestoreUser().getUserByUsername(username);
+    if (user != null) {
+      for (var pid in user.postIdList) {
+        PostModel post = await FirestorePost().getPostFromFirestore(pid);
+        for (var uid in post.mentionIdList) {
+          UserModel mentionedUser =
+              await FirestoreUser().getUserFromFirestore(uid);
+          final nickname = mentionedUser.nickname;
           if (!postGroup.containsKey(nickname)) {
-            postGroup[nickname] = [post];
+            postGroup[nickname] = [post.postId];
           } else {
-            postGroup[nickname]!.add(post);
+            postGroup[nickname]!.add(post.postId);
           }
         }
       }
@@ -62,16 +51,8 @@ class FirestoreApis {
   }
 
   // API for Feed View
-  Future<List<Map<String, dynamic>>> getFeedList() async {
-    QuerySnapshot snapshot = await FirestorePost().getFeed();
-    List<Map<String, dynamic>> feedPost = [];
-    if (snapshot.size != 0) {
-      for (var doc in snapshot.docs) {
-        feedPost.add(doc.data() as Map<String, dynamic>);
-      }
-    }
-
-    return feedPost;
+  Future<List<PostModel>> getFeedList() async {
+    return await FirestorePost().getFeed();
   }
 
   // // API for Upload View

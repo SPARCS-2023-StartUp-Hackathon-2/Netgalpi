@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:netgalpi/core/service/firestore_apis.dart';
 
 import '../../model/user_model.dart';
+import '../../model/post_model.dart';
 import '../service/local_storage_user.dart';
 
 List<String> imgUrlList = [
@@ -14,7 +15,7 @@ List<String> imgUrlList = [
 ];
 
 class PostListViewModel extends GetxController {
-  List<Map<String, dynamic>> postList = [];
+  List<PostModel> postList = [];
   Map<String, CachedNetworkImageProvider> postImgMap = {};
   List<String> currentPostIdList = [];
 
@@ -47,11 +48,8 @@ class PostListViewModel extends GetxController {
     postList = await FirestoreApis().getPostList('test');
     // set postImage map
     for (var element in postList) {
-      if (element['postId'] != null) {
-        postImgMap[element['postId']] =
-            CachedNetworkImageProvider(element['imageUrl']);
-        currentPostIdList.add(element['postId']);
-      }
+      postImgMap[element.postId] = CachedNetworkImageProvider(element.imageUrl);
+      currentPostIdList.add(element.postId);
     }
     print(currentPostIdList);
   }
@@ -61,9 +59,8 @@ class PostListViewModel extends GetxController {
     currentPostIdList = [...postIdList];
   }
 
-  void addNewPost(Map<String, dynamic> newPost) {
+  void addNewPost(PostModel newPost) {
     postList.add(newPost);
-    postImgMap[newPost['postId']] =
-        CachedNetworkImageProvider(newPost['imageUrl']);
+    postImgMap[newPost.postId] = CachedNetworkImageProvider(newPost.imageUrl);
   }
 }
