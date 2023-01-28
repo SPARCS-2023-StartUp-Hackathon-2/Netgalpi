@@ -9,11 +9,18 @@ class FirestoreUser {
     await _userCollection.doc(userModel.userId).set(userModel.toJson());
   }
 
-  Future<QuerySnapshot> getUserByUsername(String username) async {
-    return await _userCollection.where("username", isEqualTo: username).get();
+  Future<UserModel> getUserFromFirestore(String uid) async {
+    DocumentSnapshot user = await _userCollection.doc(uid).get();
+    return UserModel.fromDocumentSnapshot(documentSnapshot: user);
   }
 
-  Future<DocumentSnapshot> getUserFromFirestore(String uid) async {
-    return await _userCollection.doc(uid).get();
+  Future<UserModel?> getUserByUsername(String username) async {
+    QuerySnapshot users =
+        await _userCollection.where("username", isEqualTo: username).get();
+    if (users.size == 0) {
+      return null;
+    } else {
+      return UserModel.fromDocumentSnapshot(documentSnapshot: users.docs[0]);
+    }
   }
 }
