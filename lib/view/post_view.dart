@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:netgalpi/view/components/photo_card.dart';
 
+import '../helper/datetime_parsor.dart';
+
 class PostView extends StatefulWidget {
   const PostView(
       {super.key,
@@ -62,7 +64,7 @@ class _PostViewState extends State<PostView> {
               children: [
                 const SizedBox(height: 80),
                 Text(
-                  widget.date,
+                  datetimeParsor(DateTime.parse(widget.date)),
                   style: const TextStyle(
                     color: Color.fromARGB(255, 90, 90, 90),
                     fontSize: 18,

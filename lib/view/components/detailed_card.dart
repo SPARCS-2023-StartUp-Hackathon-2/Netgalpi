@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/view/post_view.dart';
 
+import '../../helper/datetime_parsor.dart';
+
 class DetailedCard extends StatefulWidget {
   const DetailedCard(
       {super.key,
@@ -31,7 +33,7 @@ class _DetailedCardState extends State<DetailedCard> {
       openBuilder: (BuildContext context, VoidCallback _) {
         return PostView(
           url: widget.url,
-          date: widget.date, // TODO: Change to real date
+          date: widget.date,
           title: widget.title,
           mention: widget.mention,
           contentIdList: widget.contentIdList,
@@ -53,7 +55,7 @@ class _DetailedCardState extends State<DetailedCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    widget.date,
+                    datetimeParsor(DateTime.parse(widget.date)),
                     style: const TextStyle(
                       color: Color.fromARGB(255, 90, 90, 90),
                       fontSize: 18,
