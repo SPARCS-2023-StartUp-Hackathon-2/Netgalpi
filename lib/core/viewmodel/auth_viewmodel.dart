@@ -30,7 +30,7 @@ class AuthViewModel extends GetxController {
           .then((user) {
         saveUser(user, username!, nickname!);
       });
-      Get.offAll(ControlView());
+      Get.offAll(LoginView());
     } catch (error) {
       String errorMessage =
           error.toString().substring(error.toString().indexOf(' ') + 1);
@@ -71,7 +71,6 @@ class AuthViewModel extends GetxController {
       pendingPostIdList: [],
     );
     FirestoreUser().addUserToFirestore(_userModel);
-    saveUserLocal(_userModel);
   }
 
   // 휴대전화 local 에 login 정보 저장
