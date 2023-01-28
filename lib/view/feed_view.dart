@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:netgalpi/core/viewmodel/feed_viewmodel.dart';
@@ -14,9 +15,13 @@ class FeedView extends StatelessWidget {
         child: GetBuilder<FeedViewModel>(
           init: FeedViewModel(),
           builder: (controller) {
+            List<CachedNetworkImageProvider> imgUrlList = [];
+            for (var e in controller.feedIdList) {
+              imgUrlList.add(controller.feedImgMap[e]!);
+            }
             return VirticalScrollPhotoView(
               gridx: 1,
-              postIdList: controller.feedIdList,
+              imgList: imgUrlList,
             );
           },
         ),

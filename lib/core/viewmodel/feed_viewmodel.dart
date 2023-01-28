@@ -3,9 +3,6 @@ import 'package:get/get.dart';
 import 'package:netgalpi/core/service/firestore_apis.dart';
 import 'package:netgalpi/model/post_model.dart';
 
-import '../../model/user_model.dart';
-import '../service/local_storage_user.dart';
-
 class FeedViewModel extends GetxController {
   List<PostModel> feedList = [];
   List<String> feedIdList = [];
@@ -15,15 +12,15 @@ class FeedViewModel extends GetxController {
   void onInit() {
     super.onInit();
     getFeed();
-    for (var element in feedList) {
-      feedImgMap[element.postId] = CachedNetworkImageProvider(element.imageUrl);
-      feedIdList.add(element.postId);
-    }
-    update();
   }
 
   getFeed() async {
     feedList = await FirestoreApis().getFeedList();
+
+    for (var element in feedList) {
+      feedImgMap[element.postId] = CachedNetworkImageProvider(element.imageUrl);
+      feedIdList.add(element.postId);
+    }
     update();
   }
 }
