@@ -9,12 +9,8 @@ class FirestoreUser {
     await _userCollection.doc().set(userModel.toJson());
   }
 
-  Future<List<QueryDocumentSnapshot?>> getUserByUsername(
-      String username) async {
-    return await _userCollection
-        .where("username", isEqualTo: username)
-        .get()
-        .then((res) => res.docs);
+  Future<QuerySnapshot> getUserByUsername(String username) async {
+    return await _userCollection.where("username", isEqualTo: username).get();
   }
 
   Future<DocumentSnapshot> getUserFromFirestore(String uid) async {
