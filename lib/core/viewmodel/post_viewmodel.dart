@@ -10,6 +10,7 @@ class PostListViewModel extends GetxController {
   List<PostModel> postList = [];
   Map<String, CachedNetworkImageProvider> postImgMap = {};
   List<String> currentPostIdList = [];
+  Map<String, List<String>> friendsPostIdList = {};
 
   String? selectedNickName;
 
@@ -22,8 +23,13 @@ class PostListViewModel extends GetxController {
 
   @override
   void onInit() {
+    _loading = true;
     super.onInit();
-    getCurrentUser().whenComplete(() => getPost());
+    getCurrentUser().whenComplete(() {
+      getPost();
+      setGroupedPostIdMap();
+    });
+    _loading = false;
   }
 
   @override
@@ -32,9 +38,7 @@ class PostListViewModel extends GetxController {
   }
 
   getCurrentUser() async {
-    _loading = true;
     _currentUser = await LocalStorageUser.getUserData();
-    _loading = false;
   }
 
   getPost() async {
@@ -62,6 +66,12 @@ class PostListViewModel extends GetxController {
 
   void setSelectedNickName(String? nickname) {
     selectedNickName = nickname;
+    update();
+  }
+
+  void setGroupedPostIdMap() async {
+    friendsPostIdList =
+        await FirestoreApis().groupPostByUser(_currentUser!.userId);
     update();
   }
 }
