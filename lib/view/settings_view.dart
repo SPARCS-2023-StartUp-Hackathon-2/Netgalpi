@@ -67,6 +67,7 @@ class SettingsView extends StatelessWidget {
                   ],
                 ), //CustomAppBar(),
                 body: Container(
+                  color: Colors.white,
                   width: MediaQuery.of(context).size.width,
                   height: MediaQuery.of(context).size.height,
                   child: Padding(
@@ -75,24 +76,41 @@ class SettingsView extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          height: 100,
-                          color: gray50,
+                          height: 120,
+                          padding: EdgeInsets.symmetric(horizontal: 15.0),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: gray10,
+                          ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Text(
+                                '내 정보',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: gray700),
+                              ),
+                              SizedBox(height: 10),
                               Row(
                                 children: [
                                   Text(
-                                    '내 이름',
+                                    ' 내 이름',
                                     style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: gray700,
+                                    ),
                                   ),
                                   SizedBox(width: 10.0),
                                   Text(
                                     user!.nickname,
                                     style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      color: gray700,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -100,17 +118,20 @@ class SettingsView extends StatelessWidget {
                               Row(
                                 children: [
                                   Text(
-                                    '아이디',
+                                    ' 아이디',
                                     style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: gray700,
+                                    ),
                                   ),
                                   SizedBox(width: 10.0),
                                   Text(
                                     user!.username,
                                     style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      color: gray700,
+                                    ),
                                   ),
                                 ],
                               ),

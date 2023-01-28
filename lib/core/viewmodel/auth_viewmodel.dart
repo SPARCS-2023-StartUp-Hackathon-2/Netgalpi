@@ -35,15 +35,11 @@ class AuthViewModel extends GetxController {
 
   void loginWithUsernameAndPassword() async {
     try {
-      await _auth
-          .signInWithEmailAndPassword(
-              email: '${username!}@netgalpi.com', password: password!)
-          .then((user) {
-        FirestoreUser().getUserFromFirestore(user.user!.uid).then((user) {
-          saveUserLocal(user);
-        });
-      });
-      Get.offAll(ControlView());
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: '${username!}@netgalpi.com', password: password!);
+      UserModel userModel =
+          await FirestoreUser().getUserFromFirestore(userCredential.user!.uid);
+      saveUserLocal(userModel).then((data) => Get.offAll(ControlView()));
     } catch (error) {
       String errorMessage =
           error.toString().substring(error.toString().indexOf(' ') + 1);
@@ -68,8 +64,9 @@ class AuthViewModel extends GetxController {
   }
 
   // 휴대전화 local 에 login 정보 저장
-  void saveUserLocal(UserModel userModel) async {
-    LocalStorageUser.setUserData(userModel);
+  Future<bool> saveUserLocal(UserModel userModel) async {
+    await LocalStorageUser.setUserData(userModel);
+    return true;
   }
 
   // 휴대전화 local 에서 login 정보 삭제
