@@ -1,4 +1,4 @@
-# 넷갈피(Netgalpi)
+# 넷갈피 - 인터넷 추억 공유 서비스
 > SPARCS 2023 STARTUP HACKATHON Team-K
 
 # Topic
