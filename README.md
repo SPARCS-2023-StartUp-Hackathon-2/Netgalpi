@@ -26,15 +26,3 @@
 <img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
 </div>
 
-# Service Information
-## 0. 로그인화면
-
-## 1. 갤러리 뷰
-
-## 2. 갤러리 추억 뷰
-
-## 3. 갤러리 업로드
-
-## 4. 추억 업로드
-
-## 5. 알림 기능
