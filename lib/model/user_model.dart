@@ -1,43 +1,41 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  late List<String> postIdList;
-  late String userId, username, realname, token;
-  late DateTime joinDate;
+  late List<dynamic> postIdList, pendingPostIdList;
+  late String username, nickname;
+  String? userId;
 
   UserModel({
-    required this.userId,
+    this.userId,
     required this.username,
-    required this.realname,
-    required this.token,
+    required this.nickname,
     required this.postIdList,
-    required this.joinDate,
+    required this.pendingPostIdList,
   });
 
   UserModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
     userId = documentSnapshot.id;
     username = documentSnapshot['username'];
-    realname = documentSnapshot['realname'];
-    joinDate = documentSnapshot['joinDate'];
-    token = documentSnapshot['token'];
+    nickname = documentSnapshot['nickname'];
     postIdList = documentSnapshot['postIdList'];
+    pendingPostIdList = documentSnapshot['pendingPostIdList'];
   }
 
   UserModel.fromJson(Map<dynamic, dynamic> map) {
     userId = map['userId'];
     username = map['username'];
-    realname = map['realname'];
-    joinDate = map['joinDate'];
+    nickname = map['nickname'];
     postIdList = map['postIdList'];
+    pendingPostIdList = map['pendingPostIdList'];
   }
 
   Map<String, dynamic> toJson() {
     return {
       'userId': userId,
       'username': username,
-      'realname': realname,
-      'joinDate': joinDate,
+      'nickname': nickname,
       'postIdList': postIdList,
+      'pendingPostIdList': pendingPostIdList,
     };
   }
 }

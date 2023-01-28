@@ -39,6 +39,8 @@ dependencies:
   get: ^4.6.5
   eva_icons_flutter: ^3.1.0
   cloud_firestore: ^4.3.1
+  shared_preferences: ^2.0.17
+  firebase_auth: ^4.2.5
 
 dev_dependencies:
   flutter_test:
