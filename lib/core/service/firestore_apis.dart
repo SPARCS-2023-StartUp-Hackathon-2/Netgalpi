@@ -27,14 +27,13 @@ class FirestoreApis {
     }
   }
 
-  Future<List<dynamic>> getPostList(String username) async {
+  Future<List<Map<String, dynamic>>> getPostList(String username) async {
     final user = await getUserByUsername(username);
-    List<dynamic> postList = [];
+    List<Map<String, dynamic>> postList = [];
     if (user.isNotEmpty) {
       for (var postId in user["postIdList"]) {
-        await FirestorePost()
-            .getPostFromFirestore(postId)
-            .then((snapshot) => postList.add(snapshot.data()));
+        await FirestorePost().getPostFromFirestore(postId).then((snapshot) =>
+            postList.add(snapshot.data() as Map<String, dynamic>));
       }
     }
 
@@ -62,18 +61,18 @@ class FirestoreApis {
     return postGroup;
   }
 
-  // // API for Feed View
-  // Future<List<String>> getFeedList() async {
-  //   QuerySnapshot snapshot = await FirestorePost().getFeed();
-  //   List<String> feedPost = [];
-  //   if (snapshot.size != 0) {
-  //     for (var doc in snapshot.docs) {
-  //       feedPost.add(doc.id);
-  //     }
-  //   }
+  // API for Feed View
+  Future<List<Map<String, dynamic>>> getFeedList() async {
+    QuerySnapshot snapshot = await FirestorePost().getFeed();
+    List<Map<String, dynamic>> feedPost = [];
+    if (snapshot.size != 0) {
+      for (var doc in snapshot.docs) {
+        feedPost.add(doc.data() as Map<String, dynamic>);
+      }
+    }
 
-  //   return feedPost;
-  // }
+    return feedPost;
+  }
 
   // // API for Upload View
   // Future<bool> mentionValidator(String username) async {
