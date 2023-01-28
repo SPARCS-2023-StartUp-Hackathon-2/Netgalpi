@@ -6,9 +6,13 @@ import 'package:netgalpi/core/service/firestore_content.dart';
 import '../../model/user_model.dart';
 import '../../model/post_model.dart';
 import '../../model/content_model.dart';
+import '../service/firestore_post.dart';
 import '../service/local_storage_user.dart';
 
 class PostListViewModel extends GetxController {
+  String? imageUrl, mp4Url, title;
+  bool? check;
+  List<String> mentionList = [];
   List<PostModel> postList = [];
   Map<String, CachedNetworkImageProvider> postImgMap = {};
   List<String> currentPostIdList = [];
@@ -97,6 +101,33 @@ class PostListViewModel extends GetxController {
       return true;
     } catch (e) {
       print("Error: $e");
+
+      return false;
+    }
+  }
+
+  Future<bool> finalPost(String imageUrl, String mp4Url, String title,
+      bool isOpened, List<String> mentionIdList) async {
+    try {
+      String? uid = _currentUser!.userId;
+      PostModel pm = PostModel(
+          postId: '',
+          imageUrl: imageUrl,
+          mp4Url: mp4Url,
+          title: title,
+          isOpened: isOpened,
+          writerId: uid!,
+          uploadedAt: DateTime.now().toIso8601String(),
+          mentionIdList: mentionIdList,
+          likerIdList: [],
+          contentIdList: []);
+      String pid = await FirestorePost().addPostToFirestore(pm);
+      FirestoreApis().updatePostIdList(pid, uid!);
+      FirestoreApis().updatePendingList(pid);
+
+      return true;
+    } catch (e) {
+      print("error: $e");
 
       return false;
     }
