@@ -6,35 +6,53 @@ import "./firestore_user.dart";
 
 class FirestoreApis {
   // API for Gallery View
-  Future<List<dynamic>> getPostList(String username) async {
+  Future<Map<String, dynamic>> getUserByUid(String uid) async {
+    return await FirestoreUser()
+        .getUserFromFirestore(uid)
+        .then((snapshot) => snapshot.data() as Map<String, dynamic>);
+  }
+
+  Future<Map<String, dynamic>> getPostByPid(String pid) async {
+    return await FirestorePost()
+        .getPostFromFirestore(pid)
+        .then((snapshot) => snapshot.data() as Map<String, dynamic>);
+  }
+
+  Future<Map<String, dynamic>> getUserByUsername(String username) async {
     QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
     if (snapshot.size == 0) {
-      return [];
+      return {};
     } else {
-      final data = snapshot.docs[0].data() as Map<String, dynamic>;
-      List<dynamic> postList = [];
-      for (var postId in data["postIdList"]) {
-        await FirestorePost()
-            .getPostFromFirestore(postId)
-            .then((snapshot) => postList.add(snapshot.data()));
-      }
-
-      return postList;
+      return snapshot.docs[0].data() as Map<String, dynamic>;
     }
   }
 
-  Future<Map<String, List<Map<String, dynamic>>>> groupPostByUser(
-      String username) async {
-    QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
-    Map<String, List<Map<String, dynamic>>> postGroup = {};
-    if (snapshot.size != 0) {
-      for (var doc in snapshot.docs) {
-        var post = doc.data() as Map<String, dynamic>;
-        for (var user in post["mentionIdList"]) {
-          if (!postGroup.containsKey(user)) {
-            postGroup[user] = [post];
+  Future<List<Map<String, dynamic>>> getPostList(String username) async {
+    final user = await getUserByUsername(username);
+    List<Map<String, dynamic>> postList = [];
+    if (user.isNotEmpty) {
+      for (var postId in user["postIdList"]) {
+        await FirestorePost().getPostFromFirestore(postId).then((snapshot) =>
+            postList.add(snapshot.data() as Map<String, dynamic>));
+      }
+    }
+
+    return postList;
+  }
+
+  Future<Map<String, List<dynamic>>> groupPostByUser(String username) async {
+    Map<String, List<dynamic>> postGroup = {};
+    Map<String, dynamic> user = await getUserByUsername(username);
+    if (user.isNotEmpty) {
+      for (var pid in user["postIdList"]) {
+        Map<String, dynamic> post = await getPostByPid(pid);
+        for (var uid in post["mentionIdList"]) {
+          final nickname =
+              await getUserByUid(uid).then((user) => user["nickname"]);
+          if (!postGroup.containsKey(nickname)) {
+            postGroup[nickname] = [post];
           } else {
-            postGroup[user]!.add(post);
+            postGroup[nickname]!.add(post);
           }
         }
       }
@@ -44,34 +62,34 @@ class FirestoreApis {
   }
 
   // API for Feed View
-  Future<List<String>> getFeedList() async {
+  Future<List<Map<String, dynamic>>> getFeedList() async {
     QuerySnapshot snapshot = await FirestorePost().getFeed();
-    List<String> feedPost = [];
+    List<Map<String, dynamic>> feedPost = [];
     if (snapshot.size != 0) {
       for (var doc in snapshot.docs) {
-        feedPost.add(doc.id);
+        feedPost.add(doc.data() as Map<String, dynamic>);
       }
     }
 
     return feedPost;
   }
 
-  // API for Upload View
-  Future<bool> mentionValidator(String username) async {
-    QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
+  // // API for Upload View
+  // Future<bool> mentionValidator(String username) async {
+  //   QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
 
-    return snapshot.size != 0;
-  }
+  //   return snapshot.size != 0;
+  // }
 
-  uploadPost(String pid) async {
-    DocumentSnapshot postSnapshot =
-        await FirestorePost().getPostFromFirestore(pid);
-    final post = postSnapshot.data() as Map<String, dynamic>;
-    for (var uid in post["mentionIdList"]) {
-      DocumentSnapshot userSnapshot =
-          await FirestoreUser().getUserFromFirestore(uid);
-      final user = userSnapshot.data() as Map<String, dynamic>;
-      user["pendingPostIdList"].add(post["pid"]);
-    }
-  }
+  // uploadPost(String pid) async {
+  //   DocumentSnapshot postSnapshot =
+  //       await FirestorePost().getPostFromFirestore(pid);
+  //   final post = postSnapshot.data() as Map<String, dynamic>;
+  //   for (var uid in post["mentionIdList"]) {
+  //     DocumentSnapshot userSnapshot =
+  //         await FirestoreUser().getUserFromFirestore(uid);
+  //     final user = userSnapshot.data() as Map<String, dynamic>;
+  //     user["pendingPostIdList"].add(post["pid"]);
+  //   }
+  // }
 }
