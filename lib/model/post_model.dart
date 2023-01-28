@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
-  String? postId;
-  late String imageUrl, mp4Url, title, writerId, uploadedAt;
+  late String postId, imageUrl, mp4Url, title, writerId, uploadedAt;
   late int likesCount;
   late bool isOpened;
   late List<dynamic> mentionIdList, likerIdList, contentIdList;

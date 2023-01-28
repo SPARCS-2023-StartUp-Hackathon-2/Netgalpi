@@ -14,7 +14,7 @@ class FireStorage {
 
       return await postRef.getDownloadURL();
     } on FirebaseException catch (e) {
-      print("error:");
+      print("error: $e");
       return "";
     }
   }
@@ -25,7 +25,7 @@ class FireStorage {
 
       return await contentRef.getDownloadURL();
     } on FirebaseException catch (e) {
-      print("error:");
+      print("error: $e");
       return "";
     }
   }
@@ -36,7 +36,7 @@ class FireStorage {
 
       return await videoRef.getDownloadURL();
     } on FirebaseException catch (e) {
-      print("error:");
+      print("error: $e");
       return "";
     }
   }

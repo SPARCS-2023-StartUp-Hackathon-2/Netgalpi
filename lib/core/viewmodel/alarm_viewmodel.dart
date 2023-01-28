@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:netgalpi/core/service/firestore_post.dart';
+import 'package:netgalpi/core/service/firestore_user.dart';
 import 'package:netgalpi/model/post_model.dart';
 import 'package:netgalpi/model/user_model.dart';
 
@@ -17,21 +18,23 @@ class AlarmViewModel extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getCurrentUser().whenComplete(() async {
-      for (String pId in _currentUser!.pendingPostIdList) {
-        var pendingPost = await FirestorePost().getPostModelFromFirestore(pId);
-      }
-    });
-  }
-
-  @override
-  void onReady() async {
-    update();
+    getCurrentUser().whenComplete(() => getPendingPosts());
   }
 
   getCurrentUser() async {
     _loading = true;
-    _currentUser = await LocalStorageUser.getUserData();
+    UserModel? user = await LocalStorageUser.getUserData();
+    _currentUser = await FirestoreUser().getUserFromFirestore(user!.userId);
     _loading = false;
+  }
+
+  getPendingPosts() async {
+    print(_currentUser!.toJson());
+    for (String pId in _currentUser!.pendingPostIdList) {
+      var pendingPost = await FirestorePost().getPostFromFirestore(pId);
+      alarmList.add(pendingPost);
+    }
+
+    update();
   }
 }
