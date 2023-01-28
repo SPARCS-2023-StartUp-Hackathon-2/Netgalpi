@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,10 @@ class AlbumView extends StatelessWidget {
         child: GetBuilder<PostListViewModel>(
             init: PostListViewModel(),
             builder: (controller) {
+              List<CachedNetworkImageProvider> imgUrlList = [];
+              for (var e in controller.currentPostIdList) {
+                imgUrlList.add(controller.postImgMap[e]!);
+              }
               return Column(children: <Widget>[
                 if (controller.selectedNickName != null)
                   Text(
@@ -31,7 +36,7 @@ class AlbumView extends StatelessWidget {
                   ),
                 VirticalScrollPhotoView(
                   gridx: 2,
-                  postIdList: controller.currentPostIdList,
+                  imgList: imgUrlList,
                 ),
               ]);
             }),
@@ -49,47 +54,5 @@ class AlbumView extends StatelessWidget {
         },
       ),
     );
-
-    // Scaffold(
-    //   resizeToAvoidBottomInset: false,
-    //   appBar: AppBar(
-    //     elevation: 0,
-    //     backgroundColor: Colors.transparent,
-    //     systemOverlayStyle: SystemUiOverlayStyle.dark,
-    //   ),
-    //   body: SingleChildScrollView(
-    //     child: GetBuilder<PostListViewModel>(
-    //         init: PostListViewModel(),
-    //         builder: (controller) {
-    //           return Column(children: <Widget>[
-    //             if (controller.selectedNickName != null)
-    //               Text(
-    //                 controller.selectedNickName ?? '',
-    //                 style: const TextStyle(
-    //                   fontSize: 32,
-    //                   fontWeight: FontWeight.w700,
-    //                   color: gray700,
-    //                 ),
-    //               ),
-    //             VirticalScrollPhotoView(
-    //               gridx: 2,
-    //               postIdList: controller.currentPostIdList,
-    //             ),
-    //           ]);
-    //         }),
-    //   ),
-    //   floatingActionButton: GestureDetector(
-    //     child: Container(
-    //       alignment: const Alignment(2.9, -0.62),
-    //       child: SvgPicture.asset(
-    //         'assets/bookmark.svg',
-    //       ),
-    //     ),
-    //     onTap: () {
-    //       // set current
-    //       Get.to(() => const GroupedAlbumView());
-    //     },
-    //   ),
-    // );
   }
 }
