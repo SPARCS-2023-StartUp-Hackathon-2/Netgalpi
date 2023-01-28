@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,57 +13,6 @@ class GroupedAlbumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // initialize postList, show main album
-    const namePostMapList = [
-      {
-        '동우': [
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu'
-        ]
-      },
-      {
-        '세진': [
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu'
-        ]
-      },
-      {
-        '동원': [
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu'
-        ]
-      },
-      {
-        '재모': [
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu'
-        ]
-      },
-      {
-        '도연': [
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu'
-        ]
-      },
-      {
-        '태연': [
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu'
-        ]
-      },
-      {
-        'xdjfks': [
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu',
-          'rBi45E2Ldz1Qx58K5Buu'
-        ]
-      },
-    ];
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -80,11 +31,12 @@ class GroupedAlbumView extends StatelessWidget {
                   // height: double.infinity,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(namePostMapList.length, (index) {
+                    children: List.generate(
+                        controller.groupedPostIdListMap.keys.length, (index) {
                       String nicknameKey =
-                          namePostMapList[index].keys.elementAt(0);
+                          controller.groupedPostIdListMap.keys.elementAt(index);
                       List<String> postIdList =
-                          namePostMapList[index][nicknameKey]!;
+                          controller.groupedPostIdListMap[nicknameKey]!;
                       return GestureDetector(
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +52,8 @@ class GroupedAlbumView extends StatelessWidget {
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
-                                children: List.generate(3, (index) {
+                                children: List.generate(
+                                    min(3, postIdList.length), (index) {
                                   var size = MediaQuery.of(context).size;
                                   final double itemWidth =
                                       size.width / 3 - 4 * 4;
@@ -125,6 +78,7 @@ class GroupedAlbumView extends StatelessWidget {
                         onTap: () {
                           // Click filter card view
                           controller.setSelectedNickName(nicknameKey);
+                          controller.setCurrentPostIdList(postIdList);
                           Get.back();
                         },
                       );
