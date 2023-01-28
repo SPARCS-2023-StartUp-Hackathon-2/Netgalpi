@@ -15,11 +15,6 @@ class AuthViewModel extends GetxController {
   String? get user => _user?.value?.uid;
 
   final _auth = FirebaseAuth.instance;
-  // @override
-  // void onInit() {
-  //   super.onInit();
-  // }
-  // signInWithNicknameAndPassword();
 
   // firebase auth 에 user 생성
   void registerWithUsernameAndPassword() async {
