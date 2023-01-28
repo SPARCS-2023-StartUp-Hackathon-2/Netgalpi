@@ -8,12 +8,12 @@ import 'login_view.dart';
 
 class RegisterView extends GetWidget<AuthViewModel> {
   final AuthViewModel _auth = AuthViewModel();
+  final _formKey = GlobalKey<FormState>();
 
   RegisterView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     return GetBuilder<AuthViewModel>(
       init: AuthViewModel(),
       builder: ((controller) => Scaffold(

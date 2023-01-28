@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/view/auth/register_view.dart';
-import 'package:netgalpi/view/components/c_text_input.dart';
 
 import '../../constants.dart';
 import '../../core/viewmodel/auth_viewmodel.dart';
