@@ -4,6 +4,7 @@ import 'package:netgalpi/constants.dart';
 class CustomTextFormField extends StatelessWidget {
   final String title, hintText, helpinfo;
   final String? Function(String?) validatorFn;
+  final String? Function(String?)? onChangedFn;
   final Function(String?) onSavedFn;
   final String? initialValue;
   final TextInputType? keyboardType;
@@ -17,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
     this.helpinfo = '',
     this.initialValue = '',
     this.keyboardType,
+    this.onChangedFn,
     this.obscureText = false,
     this.showLabel = true,
   });
@@ -84,6 +86,7 @@ class CustomTextFormField extends StatelessWidget {
           initialValue: initialValue,
           validator: validatorFn,
           onSaved: onSavedFn,
+          onChanged: onChangedFn,
         ),
       ],
     );
