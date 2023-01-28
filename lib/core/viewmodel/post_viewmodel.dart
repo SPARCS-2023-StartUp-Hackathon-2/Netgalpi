@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/core/service/firestore_apis.dart';
+import 'package:netgalpi/core/service/firestore_content.dart';
 
 import '../../model/user_model.dart';
 import '../../model/post_model.dart';
+import '../../model/content_model.dart';
 import '../service/local_storage_user.dart';
 
 class PostListViewModel extends GetxController {
@@ -24,6 +26,7 @@ class PostListViewModel extends GetxController {
   @override
   void onInit() {
     _loading = true;
+    _loading = true;
     super.onInit();
     getCurrentUser().whenComplete(() {
       getPost();
@@ -38,7 +41,9 @@ class PostListViewModel extends GetxController {
   }
 
   getCurrentUser() async {
+    _loading = true;
     _currentUser = await LocalStorageUser.getUserData();
+    _loading = false;
   }
 
   getPost() async {
@@ -55,6 +60,7 @@ class PostListViewModel extends GetxController {
 
   void setCurrentPostIdList(List<String> postIdList) {
     currentPostIdList = [...postIdList];
+    update();
     update();
   }
 
@@ -74,5 +80,26 @@ class PostListViewModel extends GetxController {
     groupedPostIdListMap = await FirestoreApis().groupPostByUser('test');
     print(groupedPostIdListMap);
     update();
+  }
+
+  Future<bool> contentFinal(
+      String pid, String contentImgUrl, String contentText, String uid) async {
+    try {
+      ContentModel cm = ContentModel(
+          contentId: "",
+          contentPostId: pid,
+          contentImgUrl: contentImgUrl,
+          contentText: contentText,
+          uploadedAt: DateTime.now().toIso8601String(),
+          writerId: uid);
+      String cid = await FirestoreContent().addContentToFirestore(cm);
+      FirestoreApis().updateContentList(cid);
+
+      return true;
+    } catch (e) {
+      print("Error: $e");
+
+      return false;
+    }
   }
 }
