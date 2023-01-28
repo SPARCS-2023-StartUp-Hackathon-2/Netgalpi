@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/firebase_options.dart';
+import 'package:netgalpi/sign_up.dart';
 
 import 'helper/binding.dart';
 import 'view/control_view.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       initialBinding: Binding(),
-      home: const ControlView(),
+      home: Sign_up(),
       debugShowCheckedModeBanner: false,
       title: '넷갈피',
     );
