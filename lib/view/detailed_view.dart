@@ -65,37 +65,43 @@ class _DetailedViewState extends State<DetailedView> {
         //     return true;
         //   },
         child: PageView(controller: controller, children: [
-          ...imageProviderList.map((e) => Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  AspectRatio(
-                    aspectRatio: 2 / 3,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 8),
-                      child: PhotoView(
-                        imageProvider: e,
-                      ),
+          ...postController.currentPostIdList.map((e) {
+            var post = postController.postList
+                .firstWhere((element) => element.postId == e);
+            var imgProvider = postController.postImgMap[e];
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AspectRatio(
+                  aspectRatio: 2 / 3,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+                    child: PhotoView(
+                      imageProvider: imgProvider!,
                     ),
                   ),
-                  Expanded(
-                    child: Transform.translate(
-                      offset: Offset(0, 0),
-                      child: Padding(
+                ),
+                Expanded(
+                  child: Transform.translate(
+                    offset: Offset(0, 0),
+                    child: Padding(
                         padding: EdgeInsets.symmetric(
                           // horizontal: MediaQuery.of(context).size.width * 0.065,
                           vertical: 16,
                         ),
                         child: DetailedCard(
-                            url: e.url,
-                            date: "2023년 1월 28일",
-                            title: "브로커 화이팅~! 가나다라가🌟나다라가나다라가나다라가나다라가나다라",
-                            mention: ["star", "star", "star", "s"]),
-                      ),
-                    ),
+                          url: post.imageUrl,
+                          date: post.uploadedAt,
+                          title: post.title,
+                          mention: post.mentionIdList,
+                          contentIdList: post.contentIdList,
+                        )),
                   ),
-                ],
-              ))
+                ),
+              ],
+            );
+          })
         ]),
       ),
     );
