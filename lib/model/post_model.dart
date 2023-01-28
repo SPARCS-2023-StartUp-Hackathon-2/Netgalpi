@@ -5,7 +5,7 @@ class PostModel {
   late DateTime uploadedAt;
   late int likesCount;
   late bool isOpened;
-  late List<String> mentionIdList, likerIdList, contentIdList;
+  late List<dynamic> mentionIdList, likerIdList, contentIdList;
 
   PostModel({
     required this.postId,
@@ -14,12 +14,12 @@ class PostModel {
     required this.title,
     required this.isOpened,
     required this.writerId,
+    required this.uploadedAt,
     required this.mentionIdList,
     required this.likerIdList,
     required this.contentIdList,
     this.likesCount = 0,
-    uploadedAt,
-  }) : uploadedAt = uploadedAt ?? DateTime.now();
+  });
 
   PostModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
     postId = documentSnapshot.id;
