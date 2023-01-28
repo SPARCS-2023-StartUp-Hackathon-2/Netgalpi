@@ -9,6 +9,8 @@ import '../service/local_storage_user.dart';
 
 class AuthViewModel extends GetxController {
   String? username, password, nickname;
+  String validatorTitle = '';
+  String validatorMessage = '';
 
   Rxn<User>? _user = Rxn<User>();
 
@@ -18,6 +20,11 @@ class AuthViewModel extends GetxController {
 
   // firebase auth 에 user 생성
   void registerWithUsernameAndPassword() async {
+    if (validatorTitle != '' || validatorMessage != '') {
+      Get.snackbar(validatorTitle, validatorMessage);
+      validatorTitle = '';
+      validatorMessage = '';
+    }
     try {
       await _auth
           .createUserWithEmailAndPassword(
@@ -34,6 +41,11 @@ class AuthViewModel extends GetxController {
   }
 
   void loginWithUsernameAndPassword() async {
+    if (validatorTitle != '' || validatorMessage != '') {
+      Get.snackbar(validatorTitle, validatorMessage);
+      validatorTitle = '';
+      validatorMessage = '';
+    }
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: '${username!}@netgalpi.com', password: password!);

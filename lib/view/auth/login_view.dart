@@ -41,8 +41,10 @@ class LoginView extends GetWidget<AuthViewModel> {
                             title: '아이디',
                             hintText: '아이디',
                             validatorFn: (value) {
-                              if (value!.isEmpty)
-                                return '이메일 또는 아이디는 필수 항목입니다.';
+                              if (value!.isEmpty) {
+                                controller.validatorTitle = '로그인 실패';
+                                controller.validatorMessage = '이름은 필수 항목입니다.';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.username = value;
@@ -55,7 +57,10 @@ class LoginView extends GetWidget<AuthViewModel> {
                             title: '비밀번호',
                             hintText: '비밀번호',
                             validatorFn: (value) {
-                              if (value!.isEmpty) return '비밀번호는 필수 항목입니다.';
+                              if (value!.isEmpty) {
+                                controller.validatorTitle = '로그인 실패';
+                                controller.validatorMessage = '비밀번호는 필수 항목입니다.';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.password = value;

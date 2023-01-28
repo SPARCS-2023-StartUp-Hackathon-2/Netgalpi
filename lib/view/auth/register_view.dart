@@ -44,16 +44,37 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                   title: '아이디',
                                   hintText: '',
                                   validatorFn: (value) {
-                                    if (value!.isEmpty) return '아이디는 필수 항목입니다.';
+                                    if (value!.isEmpty || value.length < 6) {
+                                      controller.validatorTitle = '회원가입 실패';
+                                      controller.validatorMessage =
+                                          '아이디를 6자 이상으로 적어주세요';
+                                    }
                                   },
                                   onSavedFn: (value) {
                                     controller.username = value;
                                   },
                                 ),
                               ),
-                              ElevatedButton(
-                                child: Text('중복확인'),
-                                onPressed: () {},
+                              Container(
+                                width: 58,
+                                padding:
+                                    EdgeInsets.fromLTRB(5.0, 25.0, 0.0, 0.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: ElevatedButton(
+                                  child: Text(
+                                    '중복확인',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: salmon500),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: salmon50,
+                                    padding: EdgeInsets.all(0.0),
+                                  ),
+                                  onPressed: () {},
+                                ),
                               )
                             ],
                           ),
@@ -63,7 +84,11 @@ class RegisterView extends GetWidget<AuthViewModel> {
                             title: '비밀번호',
                             hintText: '',
                             validatorFn: (value) {
-                              if (value!.isEmpty) return '비밀번호는 필수 항목입니다.';
+                              if (value!.isEmpty || value.length < 8) {
+                                controller.validatorTitle = '회원가입 실패';
+                                controller.validatorMessage =
+                                    '비밀번호를 8자 이상으로 적어주세요';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.password = value;
@@ -75,7 +100,11 @@ class RegisterView extends GetWidget<AuthViewModel> {
                             title: '이름',
                             hintText: '',
                             validatorFn: (value) {
-                              if (value!.isEmpty) return '이름은 필수 항목입니다.';
+                              if (value!.isEmpty || value.length < 2) {
+                                controller.validatorTitle = '회원가입 실패';
+                                controller.validatorMessage =
+                                    '이름을 두 자 이상으로 적어주세요';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.nickname = value;
@@ -110,8 +139,9 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                         .registerWithUsernameAndPassword();
                                   }
                                 },
-                                style: TextButton.styleFrom(
-                                  splashFactory: NoSplash.splashFactory,
+                                style: ButtonStyle(
+                                  overlayColor:
+                                      MaterialStateProperty.all(salmon50),
                                 ),
                               ),
                             ),
