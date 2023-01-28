@@ -26,6 +26,7 @@ class PostListViewModel extends GetxController {
   @override
   void onInit() {
     _loading = true;
+    _loading = true;
     super.onInit();
     getCurrentUser().whenComplete(() {
       getPost();
@@ -40,7 +41,9 @@ class PostListViewModel extends GetxController {
   }
 
   getCurrentUser() async {
+    _loading = true;
     _currentUser = await LocalStorageUser.getUserData();
+    _loading = false;
   }
 
   getPost() async {
@@ -57,6 +60,7 @@ class PostListViewModel extends GetxController {
 
   void setCurrentPostIdList(List<String> postIdList) {
     currentPostIdList = [...postIdList];
+    update();
     update();
   }
 
