@@ -1,5 +1,6 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/control_viewmodel.dart';
@@ -7,20 +8,54 @@ import 'package:netgalpi/view/album_view.dart';
 import 'package:netgalpi/view/feed_view.dart';
 import 'package:netgalpi/view/settings_view.dart';
 
+import '../core/service/local_storage_user.dart';
+import '../model/user_model.dart';
+import 'auth/login_view.dart';
+
 class ControlView extends StatelessWidget {
-  const ControlView({super.key});
+  ControlView({super.key});
+
+  late UserModel? user;
+
+  getUser() async {
+    user = await LocalStorageUser.getUserData();
+    print('resultOfGetUser');
+    print(user?.userId);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ControlViewModel>(
-        init: ControlViewModel(),
-        builder: (controller) => Scaffold(
-              body: IndexedStack(
-                index: controller.navigatorIndex,
-                children: [FeedView(), AlbumView(), SettingsView()],
-              ),
-              bottomNavigationBar: const CustomBottomNavigationBar(),
-            ));
+    return FutureBuilder(
+        future: getUser(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.active:
+              return const CircularProgressIndicator();
+            case ConnectionState.waiting:
+              return const CircularProgressIndicator();
+            case ConnectionState.done:
+              if (user == null) {
+                print('opening loginview');
+                FlutterNativeSplash.remove();
+                return LoginView();
+              } else {
+                print('opening controlview');
+                FlutterNativeSplash.remove();
+                return GetBuilder<ControlViewModel>(
+                  init: ControlViewModel(),
+                  builder: (controller) => Scaffold(
+                    body: IndexedStack(
+                      index: controller.navigatorIndex,
+                      children: [FeedView(), AlbumView(), SettingsView()],
+                    ),
+                    bottomNavigationBar: const CustomBottomNavigationBar(),
+                  ),
+                );
+              }
+            case ConnectionState.none:
+              return const CircularProgressIndicator();
+          }
+        });
   }
 }
 

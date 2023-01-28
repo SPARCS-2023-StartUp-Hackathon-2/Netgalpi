@@ -1,30 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PostModel {
-  late String postId, imageUrl, gifUrl, title, writerId;
-  late DateTime uploadedAt;
+  String? postId;
+  late String imageUrl, mp4Url, title, writerId, uploadedAt;
   late int likesCount;
   late bool isOpened;
-  late List<String> mentionIdList, likerIdList, contentIdList;
+  late List<dynamic> mentionIdList, likerIdList, contentIdList;
 
   PostModel({
     required this.postId,
     required this.imageUrl,
-    required this.gifUrl,
+    required this.mp4Url,
     required this.title,
     required this.isOpened,
     required this.writerId,
+    required this.uploadedAt,
     required this.mentionIdList,
     required this.likerIdList,
     required this.contentIdList,
     this.likesCount = 0,
-    uploadedAt,
-  }) : uploadedAt = uploadedAt ?? DateTime.now();
+  });
 
   PostModel.fromDocumentSnapshot({required DocumentSnapshot documentSnapshot}) {
     postId = documentSnapshot.id;
     imageUrl = documentSnapshot['imageUrl'];
-    gifUrl = documentSnapshot['gifUrl'];
+    mp4Url = documentSnapshot['mp4Url'];
     title = documentSnapshot['title'];
     uploadedAt = documentSnapshot['uploadedAt'];
     isOpened = documentSnapshot['isOpened'];
@@ -38,7 +38,7 @@ class PostModel {
   PostModel.fromJson(Map<dynamic, dynamic> map) {
     postId = map['postId'];
     imageUrl = map['imageUrl'];
-    gifUrl = map['gifUrl'];
+    mp4Url = map['mp4Url'];
     title = map['title'];
     uploadedAt = map['uploadedAt'];
     isOpened = map['isOpened'];
@@ -53,7 +53,7 @@ class PostModel {
     return {
       'postId': postId,
       'imageUrl': imageUrl,
-      'gifUrl': gifUrl,
+      'mp4Url': mp4Url,
       'title': title,
       'uploadedAt': uploadedAt,
       'isOpened': isOpened,
