@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:netgalpi/view/detailed_view.dart';
+
+import 'components/virtical_scroll_photo_view.dart';
 
 const MyVideoURL =
     'https://s3.us-west-2.amazonaws.com/secure.notion-static.com/f580fa44-1473-4977-9e9c-ef4f42e105fd/_talkv_wsGXZfIu2Y_4tMcyll1gfKq1M6Xk5P010_talkv_high.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230128%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230128T070123Z&X-Amz-Expires=86400&X-Amz-Signature=50040ea7b8bd54fd97f65132b56e3247625e37c2016c7c2a8a4a61e24ba534fe&X-Amz-SignedHeaders=host&response-content-disposition=filename%3D%22_talkv_wsGXZfIu2Y_4tMcyll1gfKq1M6Xk5P010_talkv_high.MP4.mp4%22&x-id=GetObject';
@@ -23,32 +27,22 @@ class AlbumView extends StatelessWidget {
     return Center(
       child: Stack(
         children: <Widget>[
-          SvgPicture.asset(
-            'assets/bookmark.svg',
+          VirticalScrollPhotoView(
+            imageUrlList: augmentedUrlList,
+            gridx: 2,
           ),
-          GridView.count(
-            crossAxisCount: 2,
-            controller: new ScrollController(keepScrollOffset: true),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            childAspectRatio: (itemWidth / itemHeight),
-            children: augmentedUrlList.map((String url) {
-              return new GestureDetector(
-                onTap: () {
-                  print("card clicked");
-                  //   Navigator.push(context,
-                  //   MaterialPageRoute(builder: (context) => const AlbumDetail()))
-                },
-                child: new Card(
-                  color: Colors.white,
-                  margin: EdgeInsets.all(4.0),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Image.network(url, fit: BoxFit.cover)),
-                ),
-              );
-            }).toList(),
-          )
+          GestureDetector(
+            child: Positioned(
+              right: 0,
+              top: 100,
+              child: SvgPicture.asset(
+                'assets/bookmark.svg',
+              ),
+            ),
+            onTap: () {
+              // Get.to(() => group_album_view.);
+            },
+          ),
         ],
       ),
     );
