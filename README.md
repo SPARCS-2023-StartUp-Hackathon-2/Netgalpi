@@ -1,12 +1,14 @@
 # 넷갈피(Netgalpi)
-> SPARCS 2023 STARTUP HACKATHON Team K
+> SPARCS 2023 STARTUP HACKATHON Team-K
 
 # Topic
-* 지나간 추억을 함께한 사람들끼리 되새겨 볼 수 있는 기억을 제공합니다
+* 지나간 추억을 함께한 사람들과 되새기는 순간들을 제공해줍니다
 
 # Key Features
 * 하루의 추억이 담긴 사진들을 모아 보여줍니다.
-* 
+* 함께한 사람들과 그날의 추억들을 풍성하게 할 수 있습니다.
+* 멘션을 통해 함께한 사람들과 사진을 공유할 수 있습니다.
+* 피드를 통해 더 많은 사람들과 기억을 소통할 수 있습니다.
 
 # Developer Information
 * [김태연](https://github.com/tykim5931) (DGIST 19)
