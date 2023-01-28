@@ -1,16 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import "./filestore_content.dart";
+// import "./filestore_content.dart";
 import "./filestore_post.dart";
 import "./filestore_user.dart";
 
 class FirestoreApis {
-  final CollectionReference _postCollection =
-      FirebaseFirestore.instance.collection('post');
-  final CollectionReference _userCollection =
-      FirebaseFirestore.instance.collection('user');
-  final CollectionReference _contentCollection =
-      FirebaseFirestore.instance.collection('content');
-
   // API for Gallery View
   Future<String> getPostList(String username) async {
     QuerySnapshot snapshot = await FirestoreUser().getUserByUsername(username);
