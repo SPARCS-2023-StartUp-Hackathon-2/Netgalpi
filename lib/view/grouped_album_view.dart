@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
+import 'package:netgalpi/view/album_view.dart';
 
 class GroupedAlbumView extends StatelessWidget {
   const GroupedAlbumView({super.key});
@@ -91,7 +92,7 @@ class GroupedAlbumView extends StatelessWidget {
                           // Click filter card view
                           controller.setSelectedNickName(nicknameKey);
                           controller.setCurrentPostIdList(postIdList);
-                          Get.back();
+                          Get.to(() => const AlbumView());
                         },
                       );
                     }),
