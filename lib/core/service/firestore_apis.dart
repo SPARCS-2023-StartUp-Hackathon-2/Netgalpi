@@ -140,4 +140,14 @@ class FirestoreApis {
         .getUserByUsername(username)
         .then((value) => value == null);
   }
+
+  Future<List<String>> getUsernameListfromuidList(List<String> uidList) async {
+    List<String> unameList = [];
+    for (var uid in uidList) {
+      UserModel user = await FirestoreUser().getUserFromFirestore(uid);
+      unameList.add(user.username);
+    }
+
+    return unameList;
+  }
 }
