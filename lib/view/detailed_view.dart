@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
 import 'package:netgalpi/view/components/detailed_card.dart';
 import 'package:netgalpi/view/components/photo_view.dart';
@@ -55,15 +56,6 @@ class _DetailedViewState extends State<DetailedView> {
       body: SafeArea(
         bottom: true,
         top: true,
-        // child:
-        //   NotificationListener<ScrollNotification>(
-        //   onNotification: (notification) {
-        //     print(controller.page);
-        //     if((_currentPage - controller.page!).abs() > 0.8) {
-        //       _currentPage = controller.page!.round();
-        //     }
-        //     return true;
-        //   },
         child: PageView(controller: controller, children: [
           ...postController.currentPostIdList.map((e) {
             var post = postController.postList
@@ -84,20 +76,21 @@ class _DetailedViewState extends State<DetailedView> {
                 ),
                 Expanded(
                   child: Transform.translate(
-                    offset: Offset(0, 0),
-                    child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          // horizontal: MediaQuery.of(context).size.width * 0.065,
-                          vertical: 16,
-                        ),
-                        child: DetailedCard(
-                          url: post.imageUrl,
-                          date: post.uploadedAt,
-                          title: post.title,
-                          mention: post.mentionIdList,
-                          contentIdList: post.contentIdList,
-                        )),
-                  ),
+                      offset: Offset(0, 0),
+                      child: Container(
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 16,
+                            ),
+                            child: DetailedCard(
+                              url: post.imageUrl,
+                              date: post.uploadedAt,
+                              title: post.title,
+                              mention: post.mentionIdList,
+                              contentIdList: post.contentIdList,
+                            )),
+                      )),
                 ),
               ],
             );
