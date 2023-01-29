@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netgalpi/view/auth/register_view.dart';
 
 import '../../constants.dart';
@@ -18,31 +19,39 @@ class LoginView extends GetWidget<AuthViewModel> {
       init: AuthViewModel(),
       builder: ((controller) => Scaffold(
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
+            body: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 40),
-                  Container(
-                    width: 200,
-                    height: 100,
-                    color: gray100,
-                    child: Text('로고자리'),
+                  Text(
+                    'Netgalfi',
+                    style: GoogleFonts.dawningOfANewDay(
+                      textStyle: TextStyle(
+                        fontSize: 54,
+                        letterSpacing: 0.1,
+                        color: gray700,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Form(
                       key: _formKey,
                       child: Padding(
-                        padding: const EdgeInsets.all(70.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 70.0, vertical: 30.0),
                         child: Column(children: [
                           CustomTextFormField(
                             title: '아이디',
                             hintText: '아이디',
                             validatorFn: (value) {
-                              if (value!.isEmpty)
-                                return '이메일 또는 아이디는 필수 항목입니다.';
+                              if (value!.isEmpty) {
+                                controller.validatorTitle = '로그인 실패';
+                                controller.validatorMessage = '이름은 필수 항목입니다.';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.username = value;
@@ -55,7 +64,10 @@ class LoginView extends GetWidget<AuthViewModel> {
                             title: '비밀번호',
                             hintText: '비밀번호',
                             validatorFn: (value) {
-                              if (value!.isEmpty) return '비밀번호는 필수 항목입니다.';
+                              if (value!.isEmpty) {
+                                controller.validatorTitle = '로그인 실패';
+                                controller.validatorMessage = '비밀번호는 필수 항목입니다.';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.password = value;
@@ -80,7 +92,7 @@ class LoginView extends GetWidget<AuthViewModel> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 15,
                                   ),
                                 ),
                                 onPressed: () {
@@ -104,7 +116,7 @@ class LoginView extends GetWidget<AuthViewModel> {
                                   '처음이신가요?',
                                   style: TextStyle(
                                     color: gray400,
-                                    fontSize: 11,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -116,16 +128,17 @@ class LoginView extends GetWidget<AuthViewModel> {
                                     '회원가입하기',
                                     style: TextStyle(
                                         color: salmon500,
-                                        fontSize: 11,
+                                        fontSize: 13,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   onPressed: () {
                                     Get.to(() => RegisterView());
                                   },
-                                )
+                                ),
                               ],
                             ),
-                          )
+                          ),
+                          SizedBox(height: 100.0)
                         ]),
                       ),
                     ),

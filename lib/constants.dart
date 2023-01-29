@@ -11,6 +11,8 @@ const Color salmon700 = Color(0xFFFF1111);
 const Color salmon800 = Color(0xFFE70000);
 const Color salmon900 = Color(0xFFC50000);
 
+const Color validGreen = Color(0xFF8BD928);
+
 const Color beige50 = Color(0xFFFAE5D7);
 const Color beige100 = Color(0xFFF4DFD1);
 const Color beige200 = Color(0xFFEFD9CB);
@@ -22,6 +24,7 @@ const Color beige700 = Color(0xFF605044);
 const Color beige800 = Color(0xFF413227);
 const Color beige900 = Color(0xFF211303);
 
+const Color gray10 = Color(0xFFCDCDCD);
 const Color gray50 = Color(0xFFABABAB);
 const Color gray100 = Color(0xFFA6A6A6);
 const Color gray200 = Color(0xFFA0A0A0);

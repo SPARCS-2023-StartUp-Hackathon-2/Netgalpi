@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
+import 'package:netgalpi/view/album_view.dart';
 
 class GroupedAlbumView extends StatelessWidget {
   const GroupedAlbumView({super.key});
@@ -41,45 +42,57 @@ class GroupedAlbumView extends StatelessWidget {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                nicknameKey,
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: gray700,
+                              Row(children: [
+                                SizedBox(
+                                  width: 10, // <-- SEE HERE
                                 ),
+                                Text(
+                                  nicknameKey,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                    color: gray700,
+                                  ),
+                                ),
+                              ]),
+                              SizedBox(
+                                height: 10, // <-- SEE HERE
                               ),
                               Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: List.generate(
                                     min(3, postIdList.length), (index) {
                                   var size = MediaQuery.of(context).size;
                                   final double itemWidth =
                                       size.width / 3 - 4 * 4;
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: SizedBox(
-                                        height: itemWidth,
-                                        width: itemWidth,
-                                        child: Image(
-                                          image: controller
-                                              .postImgMap[postIdList[index]]!,
-                                          fit: BoxFit.cover,
-                                        )),
-                                  );
+                                  return Row(children: [
+                                    SizedBox(
+                                      width: 10, // <-- SEE HERE
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: SizedBox(
+                                          height: itemWidth,
+                                          width: itemWidth,
+                                          child: Image(
+                                            image: controller
+                                                .postImgMap[postIdList[index]]!,
+                                            fit: BoxFit.cover,
+                                          )),
+                                    ),
+                                  ]);
                                 }),
                               ),
                               // ignore: prefer_const_constructors
                               SizedBox(
-                                height: 20, // <-- SEE HERE
+                                height: 40, // <-- SEE HERE
                               ),
                             ]),
                         onTap: () {
                           // Click filter card view
                           controller.setSelectedNickName(nicknameKey);
                           controller.setCurrentPostIdList(postIdList);
-                          Get.back();
+                          Get.to(() => const AlbumView());
                         },
                       );
                     }),

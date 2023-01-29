@@ -1,8 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
+import 'package:netgalpi/view/components/layout.dart';
 import 'package:netgalpi/view/grouped_album_view.dart';
 
 import '../constants.dart';
@@ -14,17 +15,15 @@ class AlbumView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // initialize postList, show main album
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-      ),
+    return LayoutWidget(
       body: SingleChildScrollView(
         child: GetBuilder<PostListViewModel>(
             init: PostListViewModel(),
             builder: (controller) {
+              List<CachedNetworkImageProvider> imgUrlList = [];
+              for (var e in controller.currentPostIdList) {
+                imgUrlList.add(controller.postImgMap[e]!);
+              }
               return Column(children: <Widget>[
                 if (controller.selectedNickName != null)
                   Text(
@@ -37,12 +36,12 @@ class AlbumView extends StatelessWidget {
                   ),
                 VirticalScrollPhotoView(
                   gridx: 2,
-                  postIdList: controller.currentPostIdList,
+                  imgList: imgUrlList,
                 ),
               ]);
             }),
       ),
-      floatingActionButton: GestureDetector(
+      floatingActionBtn: GestureDetector(
         child: Container(
           alignment: const Alignment(2.9, -0.62),
           child: SvgPicture.asset(

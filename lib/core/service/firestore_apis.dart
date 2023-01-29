@@ -124,11 +124,30 @@ class FirestoreApis {
         user.postIdList.add(pid);
       }
 
+      await FirestoreUser().updateUserToFireStore(user);
+
       return true;
     } catch (e) {
       print("error $e");
 
       return false;
     }
+  }
+
+  // API for Login View
+  Future<bool> loginDistinctValidator(String username) async {
+    return await FirestoreUser()
+        .getUserByUsername(username)
+        .then((value) => value == null);
+  }
+
+  Future<List<String>> getUsernameListfromUidList(List<String> uidList) async {
+    List<String> unameList = [];
+    for (var uid in uidList) {
+      UserModel user = await FirestoreUser().getUserFromFirestore(uid);
+      unameList.add(user.username);
+    }
+
+    return unameList;
   }
 }

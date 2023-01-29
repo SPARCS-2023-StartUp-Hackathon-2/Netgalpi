@@ -5,10 +5,14 @@ import '../../model/content_model.dart';
 class FirestoreContent {
   final CollectionReference _contentCollection =
       FirebaseFirestore.instance.collection('content');
+
   Future<String> addContentToFirestore(ContentModel contentModel) async {
-    return await _contentCollection
-        .add(contentModel.toJson())
-        .then((docRef) => docRef.id);
+    DocumentReference ref = await _contentCollection.add(contentModel.toJson());
+    ContentModel initContent = await getContentFromFirestore(ref.id);
+    initContent.contentId = ref.id;
+    ref.update(initContent.toJson());
+
+    return ref.id;
   }
 
   updateContentToFirestore(ContentModel newContentModel) async {

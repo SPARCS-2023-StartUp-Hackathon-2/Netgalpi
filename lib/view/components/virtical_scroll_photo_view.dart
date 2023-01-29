@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
 import 'package:netgalpi/view/components/photo_view.dart';
 import 'package:netgalpi/view/detailed_view.dart';
 
@@ -9,10 +9,10 @@ class VirticalScrollPhotoView extends StatelessWidget {
     super.key,
     this.viewOnly = false,
     required this.gridx,
-    required this.postIdList,
+    required this.imgList,
   });
   final int gridx;
-  final List<String> postIdList;
+  final List<CachedNetworkImageProvider> imgList;
   final bool viewOnly;
 
   @override
@@ -28,7 +28,7 @@ class VirticalScrollPhotoView extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         childAspectRatio: (itemWidth / itemHeight),
-        children: List.generate(postIdList.length, (idx) {
+        children: List.generate(imgList.length, (idx) {
           return Card(
             color: Colors.white,
             margin: const EdgeInsets.all(4.0),
@@ -43,8 +43,7 @@ class VirticalScrollPhotoView extends StatelessWidget {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: PhotoView(
-                    imageProvider: Get.find<PostListViewModel>()
-                        .postImgMap[postIdList[idx]]!,
+                    imageProvider: imgList[idx],
                   )),
             ),
           );
