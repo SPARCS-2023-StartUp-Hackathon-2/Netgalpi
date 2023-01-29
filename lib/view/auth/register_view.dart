@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants.dart';
 import '../../core/viewmodel/auth_viewmodel.dart';
@@ -18,24 +19,30 @@ class RegisterView extends GetWidget<AuthViewModel> {
       init: AuthViewModel(),
       builder: ((controller) => Scaffold(
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
+            body: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 40),
-                  Container(
-                    width: 200,
-                    height: 100,
-                    color: gray100,
-                    child: Text('로고자리'),
+                  Text(
+                    'Netgalfi',
+                    style: GoogleFonts.dawningOfANewDay(
+                      textStyle: TextStyle(
+                        fontSize: 54,
+                        letterSpacing: 0.1,
+                        color: gray700,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Form(
                       key: _formKey,
                       child: Padding(
-                        padding: const EdgeInsets.all(70.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 70.0, vertical: 30.0),
                         child: Column(children: [
                           Row(
                             children: [
@@ -73,7 +80,32 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                     backgroundColor: salmon50,
                                     padding: EdgeInsets.all(0.0),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    _formKey.currentState!.save();
+                                    controller.validatorTitle = '중복 없음';
+                                    controller.validatorMessage =
+                                        '사용 가능한 아이디입니다.';
+                                    _formKey.currentState!.save();
+                                    if (controller.username!.isEmpty ||
+                                        controller.username!.length < 6) {
+                                      controller.validatorTitle = '회원가입 실패';
+                                      controller.validatorMessage =
+                                          '아이디를 6자 이상으로 적어주세요';
+                                    }
+                                    bool isOkay =
+                                        await controller.loginDistinctValidator(
+                                            controller.username!);
+                                    if (isOkay) {
+                                      Get.snackbar(controller.validatorTitle,
+                                          controller.validatorMessage);
+                                    } else {
+                                      controller.validatorTitle = '존재하는 아이디';
+                                      controller.validatorMessage =
+                                          '이미 존재하는 아이디입니다.';
+                                      Get.snackbar(controller.validatorTitle,
+                                          controller.validatorMessage);
+                                    }
+                                  },
                                 ),
                               )
                             ],
@@ -129,7 +161,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 15,
                                   ),
                                 ),
                                 onPressed: () {
@@ -153,7 +185,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                 '이미 아이디가 있으신가요?',
                                 style: TextStyle(
                                   color: gray400,
-                                  fontSize: 11,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -165,7 +197,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                   '로그인하기',
                                   style: TextStyle(
                                       color: salmon500,
-                                      fontSize: 11,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
@@ -173,7 +205,8 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                 },
                               )
                             ],
-                          )
+                          ),
+                          SizedBox(height: 100.0)
                         ]),
                       ),
                     ),

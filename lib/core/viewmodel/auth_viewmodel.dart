@@ -81,6 +81,13 @@ class AuthViewModel extends GetxController {
     return true;
   }
 
+  // API for Login View
+  Future<bool> loginDistinctValidator(String username) async {
+    return await FirestoreUser()
+        .getUserByUsername(username)
+        .then((value) => value == null);
+  }
+
   // 휴대전화 local 에서 login 정보 삭제
   void signOut() async {
     try {
