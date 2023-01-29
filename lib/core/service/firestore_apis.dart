@@ -141,7 +141,7 @@ class FirestoreApis {
         .then((value) => value == null);
   }
 
-  Future<List<String>> getUsernameListfromuidList(List<String> uidList) async {
+  Future<List<String>> getUsernameListfromUidList(List<String> uidList) async {
     List<String> unameList = [];
     for (var uid in uidList) {
       UserModel user = await FirestoreUser().getUserFromFirestore(uid);
