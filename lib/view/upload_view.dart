@@ -30,7 +30,7 @@ class _UploadViewState extends State<UploadView> {
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
     image = await picker.pickImage(source: imageSource);
-    _image = fs.file(image!.path); // 가져온 이미지를 _image에 저장
+    _image = fs.file(image.path); // 가져온 이미지를 _image에 저장
     if (image != null)
       setState(() {
         btnColor = salmon500;
@@ -38,7 +38,10 @@ class _UploadViewState extends State<UploadView> {
   }
 
   Future getMp4(ImageSource imageSource) async {
-    mp4 = await picker.pickImage(source: imageSource);
+    mp4 = await picker.pickVideo(source: imageSource);
+    setState(() {
+      mp4;
+    });
   }
 
   // 이미지를 보여주는 위젯
@@ -49,8 +52,8 @@ class _UploadViewState extends State<UploadView> {
         },
         child: Container(
             color: const Color(0x50c9c9c9),
-            width: MediaQuery.of(context).size.width / 10 * 9.5,
-            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width / 4 * 3,
+            height: MediaQuery.of(context).size.width / 4 * 3 * 3 / 2,
             child: Center(
                 child: _image == null
                     ? Container(
@@ -84,7 +87,7 @@ class _UploadViewState extends State<UploadView> {
 
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    final pad = MediaQuery.of(context).size.width / 10 * 0.5;
+    final pad = MediaQuery.of(context).size.width / 8;
     return GetBuilder<PostListViewModel>(
         init: PostListViewModel(),
         builder: ((controller) => Scaffold(
@@ -136,72 +139,83 @@ class _UploadViewState extends State<UploadView> {
                   SizedBox(height: 10.0),
                   showImage(),
                   SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
-                  Row(
-                    //crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
-                        child: const Text(
-                          'mp4가 있나요?',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              height: 1),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                        child: TextButton(
-                          onPressed: () {
-                            if (mp4 != null) {
-                              FireStorage().uploadPostImg(mp4!);
-                            }
-                          },
-                          child: const Text(
-                            '업로드하기',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                height: 1,
-                                color: salmon500),
-                          ),
-                        ),
-                      ),
-                    ],
+                  Container(
+                    child: Center(
+                        child: mp4 != null
+                            ? Container(
+                                color: salmon500,
+                                width: pad * 6,
+                                child: Column(children: [
+                                  Text(mp4.toString(),
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          height: 2,
+                                          color: Colors.white))
+                                ]),
+                              )
+                            : Row(
+                                //crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.fromLTRB(pad, 0, 0, 0),
+                                      child: const Text(
+                                        'mp4가 있나요?',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            height: 1),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          getMp4(ImageSource.gallery);
+                                          if (mp4 != null) {
+                                            FireStorage()
+                                                .uploadPostImg(mp4.path!);
+                                          }
+                                        },
+                                        child: const Text(
+                                          '업로드하기',
+                                          textAlign: TextAlign.right,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              height: 0,
+                                              color: salmon500),
+                                        ),
+                                      ),
+                                    ),
+                                  ])),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(10, 30, 50, 20),
-                        child: TextButton(
-                          onPressed: () async {
-                            if (_image != null) {
-                              var url =
-                                  await FireStorage().uploadPostImg(_image!);
-                              controller.imageUrl = url;
-                              controller.mp4Url = mp4;
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: TextButton(
+                      onPressed: () async {
+                        if (_image != null) {
+                          var url = await FireStorage().uploadPostImg(_image!);
+                          controller.imageUrl = url;
+                          controller.mp4Url = mp4 != null ? mp4.path : "";
 
-                              Get.to(TagView());
-                            }
-                          },
-                          child: Text(
-                            '다음',
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                height: 1,
-                                color: btnColor),
-                          ),
-                        ),
+                          Get.to(TagView());
+                        }
+                      },
+                      child: Text(
+                        '다음',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            height: 1,
+                            color: btnColor),
                       ),
-                    ],
-                  ),
+                    ),
+                  )
                 ],
               ),
             ))));
