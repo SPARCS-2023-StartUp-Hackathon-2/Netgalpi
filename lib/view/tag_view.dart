@@ -6,9 +6,11 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/sockets/src/socket_notifier.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:netgalpi/constants.dart';
+import 'package:netgalpi/view/detailed_view.dart';
 import '../core/service/firestorage_apis.dart';
 import '../core/viewmodel/post_viewmodel.dart';
 import 'components/custom_textformfield.dart';
+import '../core/service/firestore_apis.dart';
 
 class TagView extends StatefulWidget {
   const TagView({Key? key}) : super(key: key);
@@ -21,6 +23,9 @@ class _TagViewState extends State<TagView> {
   File? _image;
   Color btnColor = gray50;
   final picker = ImagePicker();
+  var _checkBoxValue1 = false;
+  var title;
+  List<String> mentionList = [];
 
   // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
   Future getImage(ImageSource imageSource) async {
@@ -75,26 +80,19 @@ class _TagViewState extends State<TagView> {
     final pad = MediaQuery.of(context).size.width / 10 * 0.5;
 
     return GetBuilder<PostListViewModel>(
-        init: PostListViewModel(),
         builder: ((controller) => Scaffold(
             backgroundColor: const Color(0xfff4f3f9),
             body: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(0, 20, 30, 0),
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context); //뒤로가기
-                              },
-                              icon: Icon(EvaIcons.close))
-                          //Image.asset('assets/x.png', width: 200, height: 100),
-                          ),
-                    ],
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(EvaIcons.close)),
                   ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,7 +107,7 @@ class _TagViewState extends State<TagView> {
                               fontSize: 24,
                               height: 1),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   SizedBox(height: 30.0),
@@ -121,7 +119,21 @@ class _TagViewState extends State<TagView> {
                       validatorFn: (value) {
                         if (value!.isEmpty) return '제목은 필수 항목입니다.';
                       },
-                      onSavedFn: (value) {},
+                      onChangedFn: (value) {
+                        title = value;
+                        if (title != null)
+                          setState(() {
+                            btnColor = salmon500;
+                          });
+                        else {
+                          setState(() {
+                            btnColor = gray50;
+                          });
+                        }
+                      },
+                      onSavedFn: (value) {
+                        controller.title = value;
+                      },
                     ),
                   ),
                   Container(
@@ -134,7 +146,12 @@ class _TagViewState extends State<TagView> {
                         },
                         onSavedFn: (value) {},
                         onChangedFn: (value) {
-                          print(value);
+                          mentionList = value.toString().split(',');
+
+                          // if(value.toString()[-1]==''){
+                          //   value.toString() split(' ');
+                          // }
+                          // print(if(value.contains('')));
                         }),
                   ),
                   SizedBox(
@@ -145,7 +162,7 @@ class _TagViewState extends State<TagView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
                         child: const Text(
                           '공개 범위',
                           textAlign: TextAlign.left,
@@ -156,18 +173,84 @@ class _TagViewState extends State<TagView> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                        padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
                         child: TextButton(
                           onPressed: () {},
                           child: const Text(
                             '피드에 이 네컷을 공유하고 싶나요?',
-                            textAlign: TextAlign.right,
+                            textAlign: TextAlign.left,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 height: 1,
                                 color: salmon500),
                           ),
+                        ),
+                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Transform.scale(
+                              scale: 1.5,
+                              child: Checkbox(
+                                activeColor: Colors.white,
+                                checkColor: Colors.red,
+                                value: _checkBoxValue1,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _checkBoxValue1 = value!;
+                                  });
+                                },
+                              ),
+                            ),
+                            Text('네, 공유하고 싶습니다!')
+                          ])
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(10, 30, 50, 20),
+                        child: TextButton(
+                          onPressed: () {
+                            if (title == null) return;
+                            if (mentionList != []) {
+                              mentionList.forEach(
+                                (element) async {
+                                  if (await FirestoreApis()
+                                          .mentionValidator(element) ==
+                                      false) {
+                                    Get.snackbar('Failed to register...',
+                                        "멘션이 잘못되었습니다.");
+                                  }
+                                },
+                              );
+                            }
+
+                            controller.check = _checkBoxValue1;
+                            controller.mentionList = mentionList;
+                            var pid = controller.finalPost(
+                                controller.imageUrl!,
+                                controller.mp4Url!,
+                                title,
+                                _checkBoxValue1,
+                                mentionList);
+                            controller.getPost();
+                            Get.to(() => DetailedView(index: 0));
+                          },
+                          child: Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                '다음',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    height: 1,
+                                    color: btnColor),
+                              )),
                         ),
                       ),
                     ],

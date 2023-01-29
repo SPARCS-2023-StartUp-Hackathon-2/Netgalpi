@@ -51,8 +51,7 @@ class PostListViewModel extends GetxController {
   }
 
   getPost() async {
-    // TODO: Use Real user name instead of test _currentUser!.username
-    postList = await FirestoreApis().getPostList('test');
+    postList = await FirestoreApis().getPostList(_currentUser!.username);
     // set postImage map
     for (var element in postList) {
       postImgMap[element.postId] = CachedNetworkImageProvider(element.imageUrl);
@@ -106,7 +105,7 @@ class PostListViewModel extends GetxController {
     }
   }
 
-  Future<bool> finalPost(String imageUrl, String mp4Url, String title,
+  Future<String> finalPost(String imageUrl, String mp4Url, String title,
       bool isOpened, List<String> mentionIdList) async {
     try {
       String? uid = _currentUser!.userId;
@@ -125,11 +124,11 @@ class PostListViewModel extends GetxController {
       FirestoreApis().updatePostIdList(pid, uid!);
       FirestoreApis().updatePendingList(pid);
 
-      return true;
+      return pid;
     } catch (e) {
       print("error: $e");
 
-      return false;
+      return "";
     }
   }
 }
