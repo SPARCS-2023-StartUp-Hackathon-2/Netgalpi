@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/alarm_viewmodel.dart';
+import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
 import 'package:netgalpi/helper/datetime_parsor.dart';
 import 'package:netgalpi/model/post_model.dart';
 
@@ -90,6 +91,7 @@ class AlarmView extends GetWidget<AlarmViewModel> {
                               onPressed: () {
                                 controller.deletePending(
                                     controller.alarmList[index].postId, false);
+                                Get.snackbar('거절 완료', '초대를 거절하였습니다.');
                               },
                               child: Text(
                                 '거절',
@@ -108,7 +110,8 @@ class AlarmView extends GetWidget<AlarmViewModel> {
                               onPressed: () {
                                 controller.deletePending(
                                     controller.alarmList[index].postId, true);
-                                //Get.to(() => Detailview(index인자로));
+                                Get.find<PostListViewModel>().getPost();
+                                Get.snackbar('수락 완료', '이제 내 앨범에서도 볼 수 있습니다!');
                               },
                               child: Text(
                                 '수락',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../constants.dart';
 import '../../core/viewmodel/auth_viewmodel.dart';
@@ -18,24 +19,30 @@ class RegisterView extends GetWidget<AuthViewModel> {
       init: AuthViewModel(),
       builder: ((controller) => Scaffold(
             resizeToAvoidBottomInset: false,
-            body: SingleChildScrollView(
+            body: Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 40),
-                  Container(
-                    width: 200,
-                    height: 100,
-                    color: gray100,
-                    child: Text('로고자리'),
+                  Text(
+                    'Netgalfi',
+                    style: GoogleFonts.dawningOfANewDay(
+                      textStyle: TextStyle(
+                        fontSize: 54,
+                        letterSpacing: 0.1,
+                        color: gray700,
+                      ),
+                    ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Form(
                       key: _formKey,
                       child: Padding(
-                        padding: const EdgeInsets.all(70.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 70.0, vertical: 30.0),
                         child: Column(children: [
                           Row(
                             children: [
@@ -44,16 +51,62 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                   title: '아이디',
                                   hintText: '',
                                   validatorFn: (value) {
-                                    if (value!.isEmpty) return '아이디는 필수 항목입니다.';
+                                    if (value!.isEmpty || value.length < 6) {
+                                      controller.validatorTitle = '회원가입 실패';
+                                      controller.validatorMessage =
+                                          '아이디를 6자 이상으로 적어주세요';
+                                    }
                                   },
                                   onSavedFn: (value) {
                                     controller.username = value;
                                   },
                                 ),
                               ),
-                              ElevatedButton(
-                                child: Text('중복확인'),
-                                onPressed: () {},
+                              Container(
+                                width: 58,
+                                padding:
+                                    EdgeInsets.fromLTRB(5.0, 25.0, 0.0, 0.0),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: ElevatedButton(
+                                  child: Text(
+                                    '중복확인',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: salmon500),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: salmon50,
+                                    padding: EdgeInsets.all(0.0),
+                                  ),
+                                  onPressed: () async {
+                                    _formKey.currentState!.save();
+                                    controller.validatorTitle = '중복 없음';
+                                    controller.validatorMessage =
+                                        '사용 가능한 아이디입니다.';
+                                    _formKey.currentState!.save();
+                                    if (controller.username!.isEmpty ||
+                                        controller.username!.length < 6) {
+                                      controller.validatorTitle = '회원가입 실패';
+                                      controller.validatorMessage =
+                                          '아이디를 6자 이상으로 적어주세요';
+                                    }
+                                    bool isOkay =
+                                        await controller.loginDistinctValidator(
+                                            controller.username!);
+                                    if (isOkay) {
+                                      Get.snackbar(controller.validatorTitle,
+                                          controller.validatorMessage);
+                                    } else {
+                                      controller.validatorTitle = '존재하는 아이디';
+                                      controller.validatorMessage =
+                                          '이미 존재하는 아이디입니다.';
+                                      Get.snackbar(controller.validatorTitle,
+                                          controller.validatorMessage);
+                                    }
+                                  },
+                                ),
                               )
                             ],
                           ),
@@ -63,7 +116,11 @@ class RegisterView extends GetWidget<AuthViewModel> {
                             title: '비밀번호',
                             hintText: '',
                             validatorFn: (value) {
-                              if (value!.isEmpty) return '비밀번호는 필수 항목입니다.';
+                              if (value!.isEmpty || value.length < 8) {
+                                controller.validatorTitle = '회원가입 실패';
+                                controller.validatorMessage =
+                                    '비밀번호를 8자 이상으로 적어주세요';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.password = value;
@@ -75,7 +132,11 @@ class RegisterView extends GetWidget<AuthViewModel> {
                             title: '이름',
                             hintText: '',
                             validatorFn: (value) {
-                              if (value!.isEmpty) return '이름은 필수 항목입니다.';
+                              if (value!.isEmpty || value.length < 2) {
+                                controller.validatorTitle = '회원가입 실패';
+                                controller.validatorMessage =
+                                    '이름을 두 자 이상으로 적어주세요';
+                              }
                             },
                             onSavedFn: (value) {
                               controller.nickname = value;
@@ -100,7 +161,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 14,
+                                    fontSize: 15,
                                   ),
                                 ),
                                 onPressed: () {
@@ -110,8 +171,9 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                         .registerWithUsernameAndPassword();
                                   }
                                 },
-                                style: TextButton.styleFrom(
-                                  splashFactory: NoSplash.splashFactory,
+                                style: ButtonStyle(
+                                  overlayColor:
+                                      MaterialStateProperty.all(salmon50),
                                 ),
                               ),
                             ),
@@ -123,7 +185,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                 '이미 아이디가 있으신가요?',
                                 style: TextStyle(
                                   color: gray400,
-                                  fontSize: 11,
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -135,7 +197,7 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                   '로그인하기',
                                   style: TextStyle(
                                       color: salmon500,
-                                      fontSize: 11,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 onPressed: () {
@@ -143,7 +205,8 @@ class RegisterView extends GetWidget<AuthViewModel> {
                                 },
                               )
                             ],
-                          )
+                          ),
+                          SizedBox(height: 100.0)
                         ]),
                       ),
                     ),
