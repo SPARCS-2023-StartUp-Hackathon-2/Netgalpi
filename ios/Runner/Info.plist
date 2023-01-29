@@ -45,6 +45,10 @@
 		<false/>
 		<key>CADisableMinimumFrameDurationOnPhone</key>
 		<true/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>사진 갤러리 접근을 허용합니다.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>카메라 접근을 허용합니다.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIStatusBarHidden</key>
