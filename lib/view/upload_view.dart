@@ -59,7 +59,11 @@ class _UploadViewState extends State<UploadView> {
                     ? Container(
                         child: Column(children: [
                           SizedBox(height: 140),
-                          Icon(EvaIcons.imageOutline),
+                          Icon(
+                            EvaIcons.imageOutline,
+                            size: 100,
+                            color: gray300,
+                          ),
                           Text('추억의 네컷을 올려주세요',
                               style: TextStyle(
                                   fontSize: 24, height: 3, color: gray300))
@@ -88,136 +92,151 @@ class _UploadViewState extends State<UploadView> {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     final pad = MediaQuery.of(context).size.width / 8;
-    return GetBuilder<PostListViewModel>(
-        init: PostListViewModel(),
-        builder: ((controller) => Scaffold(
-            backgroundColor: const Color(0xfff4f3f9),
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(EvaIcons.close)),
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 0.498),
+          elevation: 0.0,
+          iconTheme: const IconThemeData(color: gray600),
+          leadingWidth: 200,
+          leading: Padding(
+            padding: EdgeInsets.fromLTRB(pad, 10, 0, 0),
+            child: Text(
+              '사진 올리기',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 30,
+                  letterSpacing: 0.1,
+                  color: gray700,
+                  fontWeight: FontWeight.bold,
+                  height: 1),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 50, 20),
+                  child: Icon(
+                    EvaIcons.close,
+                    size: 36.0,
+                  )),
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+          ],
+        ),
+        body: GetBuilder<PostListViewModel>(
+            init: PostListViewModel(),
+            builder: ((controller) => Scaffold(
+                backgroundColor: const Color(0xfff4f3f9),
+                body: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(pad, 0, 0, 0),
-                        child: const Text(
-                          '사진 올리기',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              height: 1),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(pad, 0, 0, 0),
+                            child: const Text(
+                              '네컷 사진',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  height: 3),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10.0),
+                      showImage(),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Container(
+                        child: Center(
+                            child: mp4 != null
+                                ? Container(
+                                    color: salmon500,
+                                    width: pad * 6,
+                                    child: Column(children: [
+                                      Text(mp4.toString(),
+                                          style: TextStyle(
+                                              fontSize: 24,
+                                              height: 2,
+                                              color: Colors.white))
+                                    ]),
+                                  )
+                                : Row(
+                                    //crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(pad, 0, 0, 0),
+                                          child: const Text(
+                                            'mp4가 있나요?',
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                height: 1),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              getMp4(ImageSource.gallery);
+                                              if (mp4 != null) {
+                                                FireStorage()
+                                                    .uploadPostImg(mp4.path!);
+                                              }
+                                            },
+                                            child: const Text(
+                                              '업로드하기',
+                                              textAlign: TextAlign.right,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18,
+                                                  height: 0,
+                                                  color: salmon500),
+                                            ),
+                                          ),
+                                        ),
+                                      ])),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: TextButton(
+                          onPressed: () async {
+                            if (_image != null) {
+                              var url =
+                                  await FireStorage().uploadPostImg(_image!);
+                              controller.imageUrl = url;
+                              controller.mp4Url = mp4 != null ? mp4.path : "";
+
+                              Get.to(TagView());
+                            }
+                          },
+                          child: Padding(
+                              padding: EdgeInsets.fromLTRB(0, 0, 50, 0),
+                              child: Text(
+                                '다음',
+                                textAlign: TextAlign.right,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    height: 1,
+                                    color: btnColor),
+                              )),
                         ),
                       )
                     ],
                   ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(pad, 0, 0, 0),
-                        child: const Text(
-                          '네컷 사진',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              height: 3),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.0),
-                  showImage(),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Container(
-                    child: Center(
-                        child: mp4 != null
-                            ? Container(
-                                color: salmon500,
-                                width: pad * 6,
-                                child: Column(children: [
-                                  Text(mp4.toString(),
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          height: 2,
-                                          color: Colors.white))
-                                ]),
-                              )
-                            : Row(
-                                //crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(pad, 0, 0, 0),
-                                      child: const Text(
-                                        'mp4가 있나요?',
-                                        textAlign: TextAlign.left,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                            height: 1),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          getMp4(ImageSource.gallery);
-                                          if (mp4 != null) {
-                                            FireStorage()
-                                                .uploadPostImg(mp4.path!);
-                                          }
-                                        },
-                                        child: const Text(
-                                          '업로드하기',
-                                          textAlign: TextAlign.right,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                              height: 0,
-                                              color: salmon500),
-                                        ),
-                                      ),
-                                    ),
-                                  ])),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: TextButton(
-                      onPressed: () async {
-                        if (_image != null) {
-                          var url = await FireStorage().uploadPostImg(_image!);
-                          controller.imageUrl = url;
-                          controller.mp4Url = mp4 != null ? mp4.path : "";
-
-                          Get.to(TagView());
-                        }
-                      },
-                      child: Text(
-                        '다음',
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            height: 1,
-                            color: btnColor),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ))));
+                )))));
   }
 }

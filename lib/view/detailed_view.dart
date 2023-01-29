@@ -4,12 +4,14 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/core/viewmodel/post_viewmodel.dart';
+import 'package:netgalpi/view/album_view.dart';
 import 'package:netgalpi/view/components/detailed_card.dart';
 import 'package:netgalpi/view/components/photo_view.dart';
 
 class DetailedView extends StatefulWidget {
-  const DetailedView({super.key, required this.index});
+  const DetailedView({super.key, required this.index, this.close = false});
   final int index;
+  final bool close;
 
   @override
   State<DetailedView> createState() => _DetailedViewState();
@@ -48,7 +50,12 @@ class _DetailedViewState extends State<DetailedView> {
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => {
+            if (!widget.close)
+              Navigator.of(context).pop()
+            else
+              Get.to(() => AlbumView())
+          },
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
         ),
