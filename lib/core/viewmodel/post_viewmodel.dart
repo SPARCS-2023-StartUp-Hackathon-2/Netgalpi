@@ -85,7 +85,7 @@ class PostListViewModel extends GetxController {
     update();
   }
 
-  Future<bool> contentFinal(
+  Future<bool> finalContent(
       String pid, String contentImgUrl, String contentText, String uid) async {
     try {
       ContentModel cm = ContentModel(
