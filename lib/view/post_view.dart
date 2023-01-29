@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:netgalpi/view/add_content_page.dart';
 import 'package:netgalpi/view/components/photo_card.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PostView extends StatefulWidget {
   const PostView({super.key, required this.url, required this.date, required this.title, required this.mention});
@@ -17,6 +20,34 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
+
+  XFile? _imageFile;
+
+  Future _pickImageCamera() async {
+    try {
+      final XFile? cameraImage = await ImagePicker().pickImage(source: ImageSource.camera);
+      setState(() => _imageFile = cameraImage);
+      return;
+    } on Exception catch (e) {
+      print(e);
+      return;
+    }
+  }
+
+  Future _pickImageGallery() async {
+    try {
+      final XFile? pickedFileList = await ImagePicker().pickImage(
+        maxWidth: 4096,
+        maxHeight: 4096,
+        source: ImageSource.gallery
+      );
+      setState(() => _imageFile = pickedFileList);
+    } on Exception catch (e) {
+      print("wqwe");
+      print(e);
+    }
+    return;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +96,71 @@ class _PostViewState extends State<PostView> {
               foregroundColor: Colors.pink,
             ),
             onPressed: () { 
-            
+              showDialog(
+                context: context, 
+                builder: (context) {
+                return FractionallySizedBox(
+                  widthFactor: 0.94,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            height: 50,
+                            width: 86,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              color: Colors.white,
+                            ),
+                            child: TextButton(
+                              child: Text(
+                                "업로드", 
+                                style: TextStyle(
+                                  color: Colors.black, 
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16
+                                ),
+                                ),
+                              onPressed: () {  }
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(4),
+                        child: Dialog(
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                          insetPadding: EdgeInsets.all(0),
+                          child: AspectRatio(
+                            aspectRatio: 0.8,
+                            child: (_imageFile != null) ? Image.file(File(_imageFile!.path)) : Container(height: 10, width: 10, color: Colors.pink,),
+                          )
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            child: GestureDetector(
+                              onTap: () {
+                                _pickImageGallery();
+                              },
+                              child: Container(width: 100, height: 100, color: Colors.yellow,),
+                            )
+                          )
+                        ],
+                      ),
+                      SizedBox(height: 36,)
+                    ],
+                  ),
+                );
+              });
             }, 
             icon: Icon(Icons.add, size: 20,), 
             label: Text("추가하기", 
