@@ -91,6 +91,7 @@ class _DetailedViewState extends State<DetailedView> {
                               vertical: 16,
                             ),
                             child: DetailedCard(
+                              postId: post.postId,
                               url: post.imageUrl,
                               date: post.uploadedAt,
                               title: post.title,

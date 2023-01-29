@@ -1,23 +1,27 @@
+import 'dart:io';
 import 'dart:ui';
-
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:netgalpi/view/add_content_page.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:netgalpi/constants.dart';
 import 'package:netgalpi/view/components/photo_card.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:netgalpi/view/content_upload_page.dart';
 
 import '../helper/datetime_parsor.dart';
 
 class PostView extends StatefulWidget {
   const PostView(
       {super.key,
+      required this.postId,
       required this.url,
       required this.date,
       required this.title,
       required this.mention,
       required this.contentIdList});
+  final String postId;
   final String url;
   final String date;
   final String title;
@@ -29,6 +33,20 @@ class PostView extends StatefulWidget {
 }
 
 class _PostViewState extends State<PostView> {
+  final picker = ImagePicker();
+  File? _image;
+
+  // 비동기 처리를 통해 카메라와 갤러리에서 이미지를 가져온다.
+  Future getImage(ImageSource imageSource, String pid) async {
+    final image = await picker.pickImage(source: imageSource);
+    if (image != null) {
+      _image = File(image!.path);
+      Get.to(() => ContentUploadPage(_image, pid));
+    } else {
+      Get.snackbar('이미지 미선택', '추억에 보관할 이미지를 선택해주세요.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +73,9 @@ class _PostViewState extends State<PostView> {
                 IconButton(
                   icon: const Icon(EvaIcons.editOutline,
                       size: 32, color: gray500),
-                  onPressed: () => {},
+                  onPressed: () => {
+                    //getImage(ImageSource.gallery, widget.postId)
+                  },
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                 ),

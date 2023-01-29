@@ -1,5 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:get/get.dart';
+import 'package:netgalpi/helper/image_pixels.dart';
+import 'package:netgalpi/view/full_image_view.dart';
 import 'package:netgalpi/core/service/firestore_content.dart';
 import 'package:netgalpi/model/content_model.dart';
 

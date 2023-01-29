@@ -12,11 +12,13 @@ import '../../helper/datetime_parsor.dart';
 class DetailedCard extends StatefulWidget {
   const DetailedCard(
       {super.key,
+      required this.postId,
       required this.date,
       required this.title,
       required this.mention,
       required this.url,
       required this.contentIdList});
+  final String postId;
   final String date;
   final String title;
   final List<dynamic> mention;
@@ -46,6 +48,7 @@ class _DetailedCardState extends State<DetailedCard> {
           transitionType: ContainerTransitionType.fade,
           openBuilder: (BuildContext context, VoidCallback _) {
             return PostView(
+              postId: widget.postId,
               url: widget.url,
               date: widget.date,
               title: widget.title,
