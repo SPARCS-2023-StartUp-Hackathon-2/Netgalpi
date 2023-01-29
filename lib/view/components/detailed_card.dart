@@ -83,23 +83,25 @@ class _DetailedCardState extends State<DetailedCard> {
                   const SizedBox(
                     height: 8,
                   ),
-                  RichText(
-                      text: TextSpan(
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 138, 138, 138),
-                            fontSize: 16,
-                            height: 1,
-                            letterSpacing: 0.2,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.none,
-                          ),
-                          children: [
-                        ...widget.mention.map((e) => TextSpan(children: [
-                              const TextSpan(text: '@'),
-                              TextSpan(text: e),
-                              const TextSpan(text: ' '),
-                            ]))
-                      ]))
+                  Expanded(
+                    child: RichText(
+                        text: TextSpan(
+                            style: const TextStyle(
+                              color: Color.fromARGB(255, 138, 138, 138),
+                              fontSize: 16,
+                              height: 1,
+                              letterSpacing: 0.2,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none,
+                            ),
+                            children: [
+                          ...widget.mention.map((e) => TextSpan(children: [
+                                const TextSpan(text: '@'),
+                                TextSpan(text: e),
+                                const TextSpan(text: ' '),
+                              ]))
+                        ])),
+                  )
                 ],
               )),
         );
