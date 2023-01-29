@@ -1,6 +1,6 @@
-# 넷갈피 - 우리만의 추억 공유 서비스
-> SPARCS 2023 STARTUP HACKATHON Team-K
 
+# [TEAM K] 넷갈피
+> 넷갈피 - 우리만의 추억 공유 서비스
 # Topic
 * 지나간 추억을 함께한 사람들과 되새기는 순간들을 제공해줍니다
 
@@ -10,11 +10,8 @@
 * 멘션을 통해 함께한 사람들과 사진을 공유할 수 있습니다.
 * 피드를 통해 더 많은 사람들과 기억을 소통할 수 있습니다.
 
-# Service Information
 
-
-
-# Stacks
+## 프로젝트에서 사용한 기술
 <div align=center> 
 <img src="https://img.shields.io/badge/flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white">
 <img src="https://img.shields.io/badge/androidstudio-3DDC84?style=for-the-badge&logo=androidstudio&logoColor=white">
@@ -30,3 +27,5 @@
 * [정세진](https://github.com/asjay18) (고려대 20)
 * [정재모](http://github.com/JaemoJeong) (KAIST 20)
 * [최동원](http://github.com/chlehdwon) (KAIST 18)
+
+
