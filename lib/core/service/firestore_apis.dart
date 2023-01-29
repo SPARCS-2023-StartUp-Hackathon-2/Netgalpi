@@ -34,10 +34,10 @@ class FirestoreApis {
     if (user != null) {
       for (var pid in user.postIdList) {
         PostModel post = await FirestorePost().getPostFromFirestore(pid);
-        for (var uid in post.mentionIdList) {
-          UserModel mentionedUser =
-              await FirestoreUser().getUserFromFirestore(uid);
-          final nickname = mentionedUser.nickname;
+        for (var uname in post.mentionIdList) {
+          UserModel? mentionedUser =
+              await FirestoreUser().getUserByUsername(uname);
+          final nickname = mentionedUser!.nickname;
           if (!postGroup.containsKey(nickname)) {
             postGroup[nickname] = [post.postId];
           } else {
@@ -84,9 +84,9 @@ class FirestoreApis {
   Future<bool> updatePendingList(String pid) async {
     try {
       PostModel post = await FirestorePost().getPostFromFirestore(pid);
-      for (var uid in post.mentionIdList) {
-        UserModel user = await FirestoreUser().getUserFromFirestore(uid);
-        user.pendingPostIdList.add(post.postId);
+      for (var uname in post.mentionIdList) {
+        UserModel? user = await FirestoreUser().getUserByUsername(uname);
+        user!.pendingPostIdList.add(post.postId);
       }
       await FirestorePost().updatePostToFireStore(post);
 

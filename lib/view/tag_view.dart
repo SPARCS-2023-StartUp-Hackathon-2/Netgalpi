@@ -56,7 +56,7 @@ class _TagViewState extends State<TagView> {
                               width: 200, height: 100),
                           Text('추억의 네컷을 올려주세요',
                               style: TextStyle(
-                                  fontSize: 24, height: 3, color: gray300))
+                                  fontSize: 28, height: 3, color: gray300))
                         ]),
                       )
                     : Stack(children: [
@@ -79,184 +79,236 @@ class _TagViewState extends State<TagView> {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     final pad = MediaQuery.of(context).size.width / 10 * 0.5;
 
-    return GetBuilder<PostListViewModel>(
-        builder: ((controller) => Scaffold(
-            backgroundColor: const Color(0xfff4f3f9),
-            body: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(EvaIcons.close)),
-                  ),
-                  Row(
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(255, 255, 255, 0.498),
+          elevation: 0.0,
+          iconTheme: const IconThemeData(color: gray600),
+          leadingWidth: 200,
+          leading: Padding(
+            padding: EdgeInsets.fromLTRB(pad, 10, 0, 0),
+            child: Text(
+              '태그하기',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 30,
+                  letterSpacing: 0.1,
+                  color: gray700,
+                  fontWeight: FontWeight.bold,
+                  height: 1),
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: Padding(
+                  padding: EdgeInsets.fromLTRB(0, 0, 50, 20),
+                  child: Icon(
+                    EvaIcons.close,
+                    size: 36.0,
+                  )),
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+          ],
+        ),
+        body: GetBuilder<PostListViewModel>(
+            builder: ((controller) => Scaffold(
+                backgroundColor: const Color(0xfff4f3f9),
+                body: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      SizedBox(height: 60.0),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(pad, 0, 0, 0),
+                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
                         child: const Text(
-                          '태그하기',
+                          '제목',
                           textAlign: TextAlign.left,
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 24,
-                              height: 1),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30.0),
-                  Container(
-                    width: pad * 19,
-                    child: CustomTextFormField(
-                      title: '제목',
-                      hintText: '추억의 제목을 지어주세요!',
-                      validatorFn: (value) {
-                        if (value!.isEmpty) return '제목은 필수 항목입니다.';
-                      },
-                      onChangedFn: (value) {
-                        title = value;
-                        if (title != null)
-                          setState(() {
-                            btnColor = salmon500;
-                          });
-                        else {
-                          setState(() {
-                            btnColor = gray50;
-                          });
-                        }
-                      },
-                      onSavedFn: (value) {
-                        controller.title = value;
-                      },
-                    ),
-                  ),
-                  Container(
-                    width: pad * 19,
-                    child: CustomTextFormField(
-                        title: '함께 찍은 사람',
-                        hintText: 'ex.홍길동 고길동...',
-                        validatorFn: (value) {
-                          //if (value!.isEmpty) return '';
-                        },
-                        onSavedFn: (value) {},
-                        onChangedFn: (value) {
-                          mentionList = value.toString().split(',');
-
-                          // if(value.toString()[-1]==''){
-                          //   value.toString() split(' ');
-                          // }
-                          // print(if(value.contains('')));
-                        }),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
-                        child: const Text(
-                          '공개 범위',
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                              fontSize: 28,
                               height: 1),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(50, 0, 0, 0),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            '피드에 이 네컷을 공유하고 싶나요?',
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                                height: 1,
-                                color: salmon500),
-                          ),
-                        ),
-                      ),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Transform.scale(
-                              scale: 1.5,
-                              child: Checkbox(
-                                activeColor: Colors.white,
-                                checkColor: Colors.red,
-                                value: _checkBoxValue1,
-                                onChanged: (value) {
+                          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Container(
+                            width: pad * 17,
+                            child: CustomTextFormField(
+                              title: '',
+                              hintText: '추억의 제목을 지어주세요!',
+                              validatorFn: (value) {
+                                if (value!.isEmpty) return '제목은 필수 항목입니다.';
+                              },
+                              onChangedFn: (value) {
+                                title = value;
+                                if (title != null)
                                   setState(() {
-                                    _checkBoxValue1 = value!;
+                                    btnColor = salmon500;
                                   });
-                                },
-                              ),
+                                else {
+                                  setState(() {
+                                    btnColor = gray50;
+                                  });
+                                }
+                              },
+                              onSavedFn: (value) {
+                                controller.title = value;
+                              },
                             ),
-                            Text('네, 공유하고 싶습니다!')
-                          ])
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                          )),
+                      SizedBox(
+                        height: 60,
+                      ),
                       Padding(
-                        padding: EdgeInsets.fromLTRB(10, 30, 50, 20),
-                        child: TextButton(
-                          onPressed: () {
-                            if (title == null) return;
-                            if (mentionList != []) {
-                              mentionList.forEach(
-                                (element) async {
-                                  if (await FirestoreApis()
-                                          .mentionValidator(element) ==
-                                      false) {
-                                    Get.snackbar('Failed to register...',
-                                        "멘션이 잘못되었습니다.");
-                                  }
+                        padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: const Text(
+                          '함께 찍은 사진',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 28,
+                              height: 1),
+                        ),
+                      ),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                          child: Container(
+                            width: pad * 17,
+                            child: CustomTextFormField(
+                                title: '',
+                                hintText: 'ex.홍길동 고길동...',
+                                validatorFn: (value) {
+                                  //if (value!.isEmpty) return '';
                                 },
-                              );
-                            }
+                                onSavedFn: (value) {},
+                                onChangedFn: (value) {
+                                  mentionList = value.toString().split(',');
 
-                            controller.check = _checkBoxValue1;
-                            controller.mentionList = mentionList;
-                            var pid = controller.finalPost(
-                                controller.imageUrl!,
-                                controller.mp4Url!,
-                                title,
-                                _checkBoxValue1,
-                                mentionList);
-                            controller.getPost();
-                            Get.to(() => DetailedView(index: 0));
-                          },
-                          child: Align(
-                              alignment: Alignment.bottomRight,
-                              child: Text(
-                                '다음',
-                                textAlign: TextAlign.right,
+                                  // if(value.toString()[-1]==''){
+                                  //   value.toString() split(' ');
+                                  // }
+                                  // print(if(value.contains('')));
+                                }),
+                          )),
+                      SizedBox(
+                        height: 60.0,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                            child: const Text(
+                              '공개 범위',
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  height: 1),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                            child: TextButton(
+                              onPressed: () {},
+                              child: const Text(
+                                '피드에 이 네컷을 공유하고 싶나요?',
+                                textAlign: TextAlign.left,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                     height: 1,
-                                    color: btnColor),
-                              )),
-                        ),
+                                    color: salmon500),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(0, 0, 50, 0),
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Transform.scale(
+                                      scale: 1.2,
+                                      child: Checkbox(
+                                        activeColor: Colors.white,
+                                        checkColor: Colors.red,
+                                        value: _checkBoxValue1,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            _checkBoxValue1 = value!;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    Text(
+                                      '네, 공유하고 싶습니다!',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                          height: 1,
+                                          color: gray600),
+                                    )
+                                  ]))
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10, 30, 50, 20),
+                            child: TextButton(
+                              onPressed: () {
+                                if (title == null) return;
+                                if (mentionList != []) {
+                                  mentionList.forEach(
+                                    (element) async {
+                                      if (await FirestoreApis()
+                                              .mentionValidator(element) ==
+                                          false) {
+                                        Get.snackbar('Failed to register...',
+                                            "멘션이 잘못되었습니다.");
+                                      }
+                                    },
+                                  );
+                                }
+
+                                controller.check = _checkBoxValue1;
+                                controller.mentionList = mentionList;
+                                var pid = controller.finalPost(
+                                    controller.imageUrl!,
+                                    controller.mp4Url!,
+                                    title,
+                                    _checkBoxValue1,
+                                    mentionList);
+                                controller.getPost();
+                                Get.to(
+                                    () => DetailedView(index: 0, close: true));
+                              },
+                              child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    '올리기',
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        height: 1,
+                                        color: btnColor),
+                                  )),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ))));
+                )))));
   }
 }
